@@ -1,3 +1,8 @@
+// Imported rather than written as `java.util.Properties` inline: inside the
+// `android { }` block `java` resolves to Gradle's java extension, not the
+// package, and the script fails to compile.
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -18,13 +23,55 @@ android {
         versionName = "0.5.0"
     }
 
+    // Release signing. The key that signs the published APK is deliberately
+    // NOT in this repo; point at it from `local.properties` (gitignored):
+    //
+    //   pgfReleaseStoreFile=/abs/path/pgf-release.jks
+    //   pgfReleaseKeyAlias=pgf-release
+    //   pgfReleaseStorePasswordFile=/abs/path/pgf-release.pass
+    //
+    // The password is read from a FILE rather than written into
+    // local.properties, because that file is created 0644 by every Android
+    // tool that touches it while the password file can be 0600.
+    //
+    // With no keystore configured this falls back to the debug key, so a fresh
+    // clone still builds. Such a build is fine to side-load but will NOT
+    // upgrade over the published APK — Android refuses an update signed by a
+    // different key, so uninstall first when switching.
+    val releaseSigning = run {
+        val props = Properties().apply {
+            rootProject.file("local.properties").takeIf { it.exists() }
+                ?.inputStream()?.use { load(it) }
+        }
+        fun setting(key: String, env: String) =
+            (System.getenv(env) ?: props.getProperty(key))?.takeIf { it.isNotBlank() }
+
+        val storePath = setting("pgfReleaseStoreFile", "PGF_RELEASE_STORE_FILE")
+        val passPath = setting("pgfReleaseStorePasswordFile", "PGF_RELEASE_STORE_PASSWORD_FILE")
+        val alias = setting("pgfReleaseKeyAlias", "PGF_RELEASE_KEY_ALIAS") ?: "pgf-release"
+        val store = storePath?.let { file(it) }?.takeIf { it.isFile }
+        val passFile = passPath?.let { file(it) }?.takeIf { it.isFile }
+        if (store != null && passFile != null) {
+            val secret = passFile.readText().trim()
+            signingConfigs.create("release") {
+                storeFile = store
+                storePassword = secret
+                keyAlias = alias
+                keyPassword = secret
+            }
+        } else {
+            logger.lifecycle(
+                "release signing: no keystore configured, falling back to the " +
+                    "debug key (see the comment in app/build.gradle.kts)"
+            )
+            null
+        }
+    }
+
     buildTypes {
         release {
-            // MVP: use debug-signed release too, so users can side-load a
-            // release variant without needing an upload key. Real signing
-            // is out of scope; add later if publishing.
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = releaseSigning ?: signingConfigs.getByName("debug")
         }
         debug {
             applicationIdSuffix = ".debug"

@@ -78,7 +78,9 @@ Thumbs.db
 .vscode/
 .workflow/
 
-# mobile APK build artifacts (served for download, not source)
-mobile/pgf-connector-*.apk
+# mobile APK build artifacts (published as release assets, not source).
+# The trailing * also catches the `.apk.idsig` apksigner drops beside its
+# output — an untracked file that reappears after every signing run.
+mobile/pgf-connector-*.apk*
 .codex-agent/
 perf.log

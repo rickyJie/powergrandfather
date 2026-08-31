@@ -98,7 +98,7 @@ cards, a deep-blue business palette, Chinese labels, and a
 ## Install
 
 ```bash
-# Build
+# Build — development
 cd mobile/android
 /opt/gradle/gradle-7.5/bin/gradle assembleDebug --no-daemon
 # → app-debug.apk at app/build/outputs/apk/debug/  (~14 MB)
@@ -108,6 +108,23 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 Package id: `com.csm.mobile.debug` · Label: **PGF Connector** · minSdk 26 · targetSdk 34.
+
+The debug variant is `debuggable`, which on this app means anything that can
+reach the device over ADB can read its private data directory — and that
+directory holds the user's SSH key. Fine on your own phone, **not** something
+to hand to anyone else. Builds meant for other people go through the release
+variant, which is not debuggable and has no `.debug` suffix:
+
+```bash
+# Build — anything you give to someone else
+/opt/gradle/gradle-7.5/bin/gradle assembleRelease --no-daemon \
+    -x lintVitalAnalyzeRelease -x lintVitalReportRelease -x lintVitalRelease
+# → app-release.apk at app/build/outputs/apk/release/  (~9 MB)
+```
+
+The lint exclusions are not cosmetic: `lintVitalAnalyzeRelease` hangs
+indefinitely against this SDK/AGP pair (it also prints a "SDK XML version 4"
+mismatch warning). Run `gradle lintRelease` separately if you want the report.
 
 ## Usage
 
@@ -203,7 +220,13 @@ this pass — configuration now lives inline on the dashboard.
 - **Multiple hosts / profiles**: one profile total, editing overwrites.
 - **Password auth**: private key only.
 - **Extra port forwards**: only the CSM `local → remote` mapping.
-- **APK signing for release**: `release` build uses the debug key.
+- **APK signing for release**: signs with a real key when one is configured in
+  `local.properties` (`pgfReleaseStoreFile` / `pgfReleaseKeyAlias` /
+  `pgfReleaseStorePasswordFile`, or the `PGF_RELEASE_*` env equivalents), and
+  falls back to the debug key when it is not, so a fresh clone still builds.
+  The published APK carries `CN=rickyJie, O=PowerGrandFather`; a fallback build
+  is a different key, and Android refuses an update across keys — uninstall
+  first when switching between them.
 - **Real push notifications**: badge polls the tunnel every 60s.
 - **Doze whitelisting UX**: users on MIUI/ColorOS should manually
   whitelist PGF Connector in system battery settings.
