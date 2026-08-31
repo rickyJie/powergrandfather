@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not back up anything — private key material must not leave the device. -->
+<full-backup-content>
+    <exclude domain="sharedpref" />
+</full-backup-content>

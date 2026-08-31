@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=83.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "csm"
+version = "0.1.0"
+description = "PowerGrandFather - Claude Session Manager"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy>=2.0",
+    "aiosqlite>=0.20",
+    "alembic>=1.14",
+    "apscheduler>=3.10",
+    "ptyprocess>=0.7",
+    "pexpect>=4.9",
+    "httpx>=0.27",
+    "pyyaml>=6.0",
+    "pydantic-settings>=2.14.2",
+    "pydantic>=2.9",
+    "websockets>=14",
+    "python-multipart>=0.0.20",
+    "jsonschema>=4.20",
+    # File-preview endpoint (session file viewer): server-side
+    # renders Markdown + code highlight so the browser gets pure HTML — no
+    # CDN roundtrip, works on air-gapped intranets.
+    "markdown>=3.7",
+    # arithmatex — LaTeX math in MD preview ($…$ inline, $$…$$ display);
+    # rendered client-side by the KaTeX loader injected into _HTML_HEAD.
+    "pymdown-extensions>=11.0",
+    "pygments>=2.18",
+    # B1 concurrent-write guard uses FileLock for CSM-internal mutex.
+    # Cross-process protection against the claude REPL is handled by the
+    # write-hash-compare check, not the lock itself.
+    "filelock>=3.15",
+    # Skill-bundle sync honours a per-skill `.csmsyncignore` in gitignore
+    # syntax. pathspec is the same matcher git-adjacent tooling uses — a
+    # hand-rolled fnmatch pass gets `**/`, negation and anchoring wrong.
+    "pathspec>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5",
+    "ruff>=0.7",
+    "mypy>=1.13",
+    "pip-audit>=2.7",
+]
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["csm*"]
+
+# CSS/JS for the server-rendered HTML pages (diff-view, file preview). These
+# live as real .css/.js files rather than Python string literals so editors and
+# linters can see them; that means they must be shipped as package data or a
+# non-editable install renders unstyled pages.
+[tool.setuptools.package-data]
+"csm.api._assets" = ["*.css", "*.js", "*.html"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+# E501: handled by formatter; B008: FastAPI's Query/Depends/Body must live in
+# default args by design; B904: too noisy in our HTTPException handlers where
+# the original cause adds no value to the API consumer; E701/E702: we
+# intentionally use single-line conditionals in compact validation code.
+ignore = ["E501", "B008", "B904", "E701", "E702"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

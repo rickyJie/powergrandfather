@@ -1,0 +1,11 @@
+{
+  "extends": "../../frontend/tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest/globals", "vite/client", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../frontend/src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.spec.ts"]
+}

@@ -1,0 +1,14 @@
+# Android build outputs
+build/
+app/build/
+.gradle/
+local.properties
+captures/
+*.iml
+.idea/
+.kotlin/
+
+# Signing (never commit)
+*.jks
+*.keystore
+release/

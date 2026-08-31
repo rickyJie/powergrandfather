@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title} · CSM Preview</title>
+<style>
+{style}  {pygments_css}
+</style>
+</head><body>
+<div class="header">
+  <div class="file-icon">{file_icon_svg}</div>
+  <div class="breadcrumb">{breadcrumb_html}</div>
+  <div class="meta-group">
+    {badge_html}
+    <span title="{mtime_abs}">{size} · {mtime_rel}</span>
+  </div>
+  <div class="actions">
+    <button class="btn" type="button" data-copy-path="{path_escaped_attr}" title="Copy path (c)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy path
+    </button>
+    <a class="btn btn-primary" href="/api/files/raw?path={path_encoded}" download title="Download (d)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
+    </a>
+  </div>
+</div>
+<div class="body">

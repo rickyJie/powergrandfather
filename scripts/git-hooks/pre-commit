@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# Pre-commit hook for PowerGrandFather.
+#
+# Contributors enable this by running:
+#   git config core.hooksPath scripts/git-hooks
+#
+# The hook runs two gates:
+#   1. Sensitive-string scan on staged files — rejects the commit if any
+#      known-bad pattern (private paths, personal identifiers, internal
+#      business names) shows up.
+#   2. Ruff lint on staged Python files. Skipped when ruff is not in PATH
+#      (e.g. contributor hasn't activated the csm conda env yet).
+#
+# Bypass in emergencies with `git commit --no-verify` — do not make a habit.
+
+set -e
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+# --------- gate 1: sensitive-string scan ---------
+
+# The pattern list lives OUTSIDE the repo, and is empty here by design.
+#
+# A leak guard's pattern list is itself sensitive: it enumerates the exact
+# identifiers, buckets, hostnames and absolute paths it exists to catch.
+# Committing that list publishes the very thing the hook protects — and this
+# file excludes itself from the scan below (to avoid a tautological
+# self-match), so the hook cannot catch its own list either.
+#
+# Keep your patterns in a file outside version control and point the hook at
+# it — one `grep -F` fixed string per line, blank lines and #-comments
+# ignored:
+#
+#   git config csm.sensitivePatternsFile ~/.config/csm/sensitive-patterns
+#
+# Keep entries narrow so contributors don't hit false positives on common
+# words like "user". With no file configured, gate 1 is a no-op and only the
+# ruff gate below runs.
+SENSITIVE_PATTERNS=()
+
+_patterns_file=$(git config --get csm.sensitivePatternsFile || true)
+if [ -n "$_patterns_file" ] && [ -f "$_patterns_file" ]; then
+  while IFS= read -r _line || [ -n "$_line" ]; do
+    case "$_line" in ''|'#'*) continue ;; esac
+    SENSITIVE_PATTERNS+=("$_line")
+  done < "$_patterns_file"
+fi
+
+HITS=""
+for f in $STAGED; do
+  # Skip binary + generated files; git diff --cached already excludes
+  # deletions, so we only need to guard against non-existent paths.
+  if [ ! -f "$f" ]; then continue; fi
+  case "$f" in
+    frontend/dist/*|node_modules/*|csm.db|csm.log|csm.pid|*.png|*.jpg|*.jpeg|*.gif|*.ico|*.pdf)
+      continue
+      ;;
+    # The hook itself defines the pattern list — exclude to avoid a
+    # tautological self-match. Same for the historical sanitization
+    # report checked in under docs/, and the llj_dev-→main sync guide
+    # which documents the very patterns it must not match on.
+    scripts/git-hooks/pre-commit|docs/oss-sanitize-report.md|docs/main_sync_workflow.md)
+      continue
+      ;;
+  esac
+  for pat in "${SENSITIVE_PATTERNS[@]}"; do
+    if grep -F -q -- "$pat" "$f"; then
+      HITS="${HITS}${f}: ${pat}\n"
+    fi
+  done
+done
+
+if [ -n "$HITS" ]; then
+  printf "[pre-commit] Sensitive strings detected in staged files:\n\n" 1>&2
+  printf "%b\n" "$HITS" 1>&2
+  printf "Refusing the commit. Remove the strings, or edit your pattern file\n" 1>&2
+  printf "(git config csm.sensitivePatternsFile) if the match is a false positive.\n\n" 1>&2
+  printf "To bypass in an emergency: git commit --no-verify\n" 1>&2
+  exit 1
+fi
+
+# --------- gate 2: ruff on staged Python files ---------
+
+STAGED_PY=$(echo "$STAGED" | grep -E '\.py$' || true)
+
+if [ -z "$STAGED_PY" ]; then
+  exit 0
+fi
+
+if ! command -v ruff >/dev/null 2>&1; then
+  echo "[pre-commit] ruff not found in PATH — skipping lint check."
+  echo "[pre-commit] Activate the csm conda env to enable lint gating."
+  exit 0
+fi
+
+echo "[pre-commit] ruff check on $(echo "$STAGED_PY" | wc -l) staged file(s)..."
+echo "$STAGED_PY" | xargs ruff check

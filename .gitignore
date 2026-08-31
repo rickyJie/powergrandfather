@@ -1,0 +1,84 @@
+# ---------------- Python ----------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.venv/
+venv/
+build/
+dist/
+
+# ---------------- Node / Frontend ----------------
+# Unanchored on purpose: matches node_modules/ at any depth, including the
+# repo root. The old per-path list missed the root, and an 80 MB vendored
+# tree reached this repo's history exactly that way once already.
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/tsconfig.tsbuildinfo
+docs/launch/tooling/node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# ---------------- CSM runtime ----------------
+csm.db
+csm.db-shm
+csm.db-wal
+csm.db.lock
+csm.db.backup-*
+csm.db.pre_*
+csm.log
+csm.pid
+
+# ---------------- Crash dumps ----------------
+/core
+core.[0-9]*
+
+# ---------------- Self-signed TLS material ----------------
+# Generated locally by scripts/gen-cert.sh. Never commit private keys or
+# certs — each machine (dev, LAN host) regenerates its own.
+secrets/
+
+# ---------------- Workflow runtime state ----------------
+# Keep: plan.yaml, state.json, raw_requirement.md, phase_outputs/, daily_review/ (build history)
+# Drop: live logs, lock/heartbeat state, scratch reports
+.workflow/logs/
+.workflow/state/
+.workflow/reports/raw/
+.workflow/reports/ui_review_auto_*/
+.workflow/missions/
+
+# ---------------- Claude harness runtime ----------------
+.claude/scheduled_tasks.json
+.claude/*.lock
+.claude/settings.local.json
+.claude/missions/
+
+# ---------------- CSM missions + scratch reports ----------------
+.csm_missions/
+.csm/session-output/
+.csm/internal-agent/
+/reports/
+# Per-user bmk-live opt-in sentinel; presence enables capture for this checkout.
+.bmk-live-optin
+
+# ---------------- Editor / OS ----------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+.workflow/
+
+# mobile APK build artifacts (served for download, not source)
+mobile/pgf-connector-*.apk
+.codex-agent/
+perf.log

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark scheme — same connector look, deeper canvas. -->
+
+    <color name="pgf_primary">#8FA9FF</color>
+    <color name="pgf_primary_dark">#3F58B0</color>
+    <color name="pgf_accent">#4EC8A0</color>
+    <color name="pgf_surface">#0F1420</color>
+    <color name="pgf_surface_elevated">#161C2A</color>
+    <color name="pgf_stroke">#2A3247</color>
+    <color name="pgf_text">#E4E9F5</color>
+    <color name="pgf_text_muted">#8A93A8</color>
+    <color name="pgf_status_bg">#1F2A45</color>
+    <color name="pgf_status_ok_bg">#173627</color>
+    <color name="pgf_status_warn_bg">#3A2C10</color>
+    <color name="pgf_status_err_bg">#3A1717</color>
+
+    <color name="md_primary">@color/pgf_primary</color>
+    <color name="md_on_primary">#0B1E52</color>
+    <color name="md_primary_container">#1F2E6B</color>
+    <color name="md_on_primary_container">#DDE5F8</color>
+    <color name="md_secondary">@color/pgf_accent</color>
+    <color name="md_on_secondary">#08321F</color>
+    <color name="md_secondary_container">#0E4C36</color>
+    <color name="md_on_secondary_container">#C8ECDA</color>
+    <color name="md_tertiary">@color/pgf_primary</color>
+    <color name="md_on_tertiary">#0B1E52</color>
+    <color name="md_tertiary_container">#1F2E6B</color>
+    <color name="md_on_tertiary_container">#DDE5F8</color>
+    <color name="md_error">#F2B8B5</color>
+    <color name="md_on_error">#601410</color>
+    <color name="md_background">@color/pgf_surface</color>
+    <color name="md_on_background">@color/pgf_text</color>
+    <color name="md_surface">@color/pgf_surface_elevated</color>
+    <color name="md_surface_variant">#232B41</color>
+    <color name="md_on_surface">@color/pgf_text</color>
+    <color name="md_on_surface_variant">@color/pgf_text_muted</color>
+    <color name="md_outline">@color/pgf_stroke</color>
+    <color name="md_outline_variant">#232B41</color>
+    <color name="md_surface_container">#1A2033</color>
+    <color name="md_surface_container_low">#141926</color>
+    <color name="md_surface_container_high">#20263A</color>
+
+    <color name="status_connecting">#E9B33A</color>
+    <color name="status_connected">#4EC8A0</color>
+    <color name="status_error">#F2B8B5</color>
+    <color name="status_idle">#7B8494</color>
+
+    <color name="shortcut_missions_bg">#1F2A45</color>
+    <color name="shortcut_chat_bg">#173627</color>
+    <color name="shortcut_sessions_bg">#241B4C</color>
+    <color name="shortcut_notifications_bg">#3A2C10</color>
+    <color name="shortcut_tokens_bg">#3A1F2E</color>
+    <color name="shortcut_more_bg">#152530</color>
+    <color name="shortcut_missions_fg">#A9C0FF</color>
+    <color name="shortcut_chat_fg">#7CE3B6</color>
+    <color name="shortcut_sessions_fg">#B7A6F1</color>
+    <color name="shortcut_notifications_fg">#F0BA79</color>
+    <color name="shortcut_tokens_fg">#F0A5C3</color>
+    <color name="shortcut_more_fg">#9BC5D6</color>
+</resources>

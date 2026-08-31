@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PGF Connector</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_name">PGF SSH 连接</string>
+    <string name="notification_channel_desc">保持 PowerGrandFather 的 SSH 隧道在线</string>
+    <string name="notification_msg_channel_name">会话消息</string>
+    <string name="notification_msg_channel_desc">新消息、等待输入(权限/选择)时提醒</string>
+    <string name="notif_needs_input">等待你的输入(权限/选择)</string>
+    <string name="notif_new_message">新消息</string>
+    <string name="notification_title_connecting">PGF 连接中…</string>
+    <string name="notification_title_connected">PGF 已就绪</string>
+    <string name="notification_title_error">PGF 连接错误</string>
+    <string name="stop_action">断开</string>
+
+    <!-- Dashboard header -->
+    <string name="title_product">PowerGrandFather</string>
+    <string name="subtitle_product">安全连接器 · 移动端</string>
+
+    <!-- Status -->
+    <string name="status_idle">● 未连接</string>
+    <string name="status_connecting">● 正在连接</string>
+    <string name="status_connected">● PGF 已就绪</string>
+    <string name="status_reconnecting">● 正在重连 · 第 %1$d 次</string>
+    <string name="status_error">● 连接失败</string>
+    <string name="status_stopped">● 已断开</string>
+
+    <!-- Primary + secondary actions -->
+    <string name="action_connect_open">连接并打开 PGF</string>
+    <string name="action_reconnect_open">重新连接并打开 PGF</string>
+    <string name="action_open_web">打开网页</string>
+    <string name="action_disconnect">断开连接</string>
+
+    <string name="advanced_show">高级选项 ▾</string>
+    <string name="advanced_hide">高级选项 ▴</string>
+
+    <!-- Shortcut labels (retired grid; strings kept for compat) -->
+    <string name="section_shortcuts">快捷入口</string>
+    <string name="shortcut_missions">任务</string>
+    <string name="shortcut_chat">对话</string>
+    <string name="shortcut_sessions">会话</string>
+    <string name="shortcut_notifications">通知</string>
+    <string name="shortcut_tokens">用量</string>
+    <string name="shortcut_more">更多</string>
+
+    <!-- Config sections -->
+    <string name="section_ssh_key">SSH 密钥</string>
+    <string name="pkey_hint">粘贴 OpenSSH 格式私钥</string>
+    <string name="pkey_passphrase_hint">私钥口令（可选）</string>
+    <string name="pkey_help">仅在本机以 Android Keystore AES-GCM 加密保存</string>
+    <string name="btn_gen_key">生成密钥</string>
+    <string name="btn_copy_pubkey">复制公钥</string>
+    <string name="pubkey_label">把下面这段公钥加到工作站 ~/.ssh/authorized_keys(一次即可):</string>
+    <string name="toast_key_generated">已生成密钥,请复制公钥到工作站授权</string>
+    <string name="toast_pubkey_copied">公钥已复制</string>
+    <string name="toast_no_pubkey">还没有公钥,请先点“生成密钥”</string>
+
+    <string name="section_server">服务器</string>
+    <string name="hint_ssh_host">SSH 服务器地址</string>
+    <string name="hint_ssh_user">SSH 用户名</string>
+    <string name="hint_ssh_port">SSH 端口</string>
+    <string name="hint_remote_port">服务端 PGF 端口</string>
+    <string name="hint_local_port">手机本地端口</string>
+    <string name="help_local_port">浏览器将访问 127.0.0.1 的这个端口，默认 8000</string>
+    <string name="hint_access_token">PGF Access Token（可选）</string>
+    <string name="help_access_token">仅当服务器启用了 CSM_ACCESS_TOKEN 时填写</string>
+
+    <string name="save_button">保存并连接</string>
+
+    <!-- Footer -->
+    <string name="first_use_help">首次使用：把私钥粘贴到上方 → 填服务器 → 点顶部的\"连接并打开 PGF\"。以后打开 App 直接点一次连接按钮即可。</string>
+
+    <!-- WebView -->
+    <string name="webview_title">PGF Mobile</string>
+    <string name="reload_action">刷新</string>
+
+    <!-- Toasts -->
+    <string name="toast_saved">已保存</string>
+    <string name="toast_config_missing">请填写服务器地址、用户名和私钥</string>
+    <string name="toast_not_connected">隧道未就绪</string>
+
+    <!-- Battery optimization exemption (keeps tunnel alive when screen off) -->
+    <string name="battery_opt_hint">为保持息屏后隧道不断，建议允许本应用忽略电池优化</string>
+    <string name="battery_opt_action">去设置</string>
+    <string name="battery_opt_oem_hint">若仍频繁断开，请在系统「自启动/后台运行」白名单里放行 PGF Connector</string>
+</resources>

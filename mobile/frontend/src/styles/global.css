@@ -1,0 +1,215 @@
+/* Global styles for the CSM mobile SPA.
+   ─────────────────────────────────────────────────────────────────────────
+   SINGLE SOURCE OF TRUTH for the raw palette + scales lives here at :root.
+   styles/theme.ts only mirrors a SUBSET into Vant's `--van-*` component vars
+   (it can't reach these :root customs). Keep the two in sync when changing
+   brand colours — the mapping is documented at the top of theme.ts.
+
+   Palette = "terracotta warm-beige" (ported from the Conduit design system):
+   warm paper background, layering by surface colour gradient rather than
+   shadow, terracotta primary, sage user bubbles, near-black-brown text.
+   UI code MUST consume tokens — never hard-code hex. */
+
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* ── Conduit design tokens (canonical names) ──────────────────────────── */
+  /* Surfaces — layering is by warm-beige gradient, not shadow. */
+  --bg: #faf6f1;          /* page floor: app-bar / composer / tab bar */
+  --surface: #fdfaf6;     /* raised: preview card, bottom sheet, toggle knob */
+  --surface-1: #f4ede4;   /* list item / card / input / tool-card default */
+  --surface-2: #ebe2d6;   /* hover / press, icon container */
+  --surface-3: #e3d6c5;   /* toggle-off track, disabled send, grip */
+  --outline: #d4c5b5;     /* outline button / chip stroke (1.5px) */
+  --outline-soft: #ece2d3;/* hairline card border, divider, tool-card edge */
+
+  /* Brand */
+  --primary: #c2683a;             /* terracotta: primary btn, send, cursor, links, Claude avatar */
+  --primary-soft: #e3a07d;        /* blockquote rule, active tab stroke, gradient end */
+  --primary-container: #f5e1d4;   /* FAB, tonal chip/button, leading icon container */
+  --on-primary-container: #5a2810;
+  --secondary: #6a8d6f;           /* sage: success semantics */
+  --secondary-container: #d6e8d8; /* USER bubble background, sage chip */
+  --on-secondary-container: #1d3322;
+  --tertiary: #c08aa3;            /* dusty rose: sparing accents */
+  --tertiary-container: #f4dce4;
+
+  /* Text (near-black-brown, never pure black) */
+  --text: #2a2118;
+  --text-soft: #6b5a4a;
+  --text-faint: #9b8b7c;
+
+  /* Status */
+  --success: #4a8a5e;
+  --warning: #d68a3a;
+  --danger: #c84a3a;
+  --info: #4a76b8;
+
+  /* ── Legacy alias names (mirror desktop web console) ───────────────────── */
+  /* Existing components consume these; remapped onto terracotta so the whole
+     app warms up without touching every file. Prefer the canonical names
+     above for new work. */
+  --canvas: var(--bg);
+  --card: var(--surface-1);
+  --border: var(--outline-soft);
+  --border-strong: var(--outline);
+  --ink: var(--text);
+  --ink-2: var(--text-soft);
+  --ink-mute: var(--text-faint);
+  --ink-faint: #b3a595;
+  --accent: var(--primary);
+  --accent-soft-bg: var(--primary-container);
+  --accent-soft-fg: var(--on-primary-container);
+  --pastel-red-bg: #f5ddd8;   --pastel-red-fg: #b23b2c;
+  --pastel-blue-bg: #dde6f4;  --pastel-blue-fg: #1f3a5f;
+  --pastel-green-bg: #d6e8d8; --pastel-green-fg: #1d3322;
+  --pastel-yellow-bg: #f6e6cf;--pastel-yellow-fg: #8a5a1a;
+
+  /* ── Spacing scale (4/8/10/12/14/16/20/24) ────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 10px; --space-4: 12px;
+  --space-5: 14px; --space-6: 16px; --space-7: 20px; --space-8: 24px;
+
+  /* ── Radius scale (aligned; avoid mid values) ─────────────────────────── */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ── Type scale ───────────────────────────────────────────────────────── */
+  --fs-display: 30px;  /* large title bar */
+  --fs-h1: 19px;       /* screen title */
+  --fs-hero: 22px;     /* empty-state / welcome */
+  --fs-body: 15px;     /* body / input / bubble */
+  --fs-sub: 13px;      /* sub / helper */
+  --fs-caption: 12px;  /* caption / meta */
+  --fs-label: 11px;    /* section label (uppercase, +0.6 tracking, 700) */
+
+  /* ── Shadow — deliberately minimal; layering is by colour ─────────────── */
+  --shadow-faint: none;
+  --shadow: none;
+  /* Card "elevation" is now a hairline outline, not a drop shadow. */
+  --pgf-elev: none;
+  --pgf-accent-soft: var(--surface-2);
+  /* The three places shadow IS allowed (FAB / bottom sheet / toast). */
+  --shadow-fab: 0 4px 12px rgba(197, 97, 63, 0.18), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-sheet: 0 -8px 32px rgba(42, 33, 24, 0.18);
+  --shadow-toast: 0 8px 24px rgba(0, 0, 0, 0.18);
+
+  /* ── Fonts ────────────────────────────────────────────────────────────── */
+  /* No web-font files are bundled (SSH-tunnel / offline first — no CDN pulls);
+     Inter / JetBrains Mono are used when the host has them, else system. */
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1714;
+    --surface: #25201c;
+    --surface-1: #2e2823;
+    --surface-2: #38312b;
+    --surface-3: #443c34;
+    --outline: #4d4339;
+    --outline-soft: #36302a;
+
+    --primary: #f0a585;
+    --primary-soft: #c5613f;
+    --primary-container: #5a2a14;
+    --on-primary-container: #ffe1d3;
+    --secondary: #b8d2bc;
+    --secondary-container: #2c4631;
+    --on-secondary-container: #d6e8d8;
+    --tertiary: #d8b3cd;
+    --tertiary-container: #4d2f44;
+
+    --text: #f5ece2;
+    --text-soft: #c4b4a4;
+    --text-faint: #8a7868;
+
+    /* status colours unchanged across themes */
+
+    --ink-faint: #6f5f50;
+    --pastel-red-bg: #3a2320;   --pastel-red-fg: #f0a89e;
+    --pastel-blue-bg: #22303f;  --pastel-blue-fg: #9cc2e8;
+    --pastel-green-bg: #223528; --pastel-green-fg: #a7cbac;
+    --pastel-yellow-bg: #352c1c;--pastel-yellow-fg: #ddb277;
+
+    --pgf-accent-soft: var(--surface-2);
+    --shadow-fab: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-toast: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Shiki dual-theme: light colours are inline; flip to the dark theme's
+   `--shiki-dark*` custom properties when the system is in dark mode. */
+@media (prefers-color-scheme: dark) {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: var(--font-sans);
+  background: var(--van-background);
+  color: var(--van-text-color);
+}
+
+/* Follow system dark mode at the document level too (Vant tokens handle the
+   components; this keeps overscroll / html background consistent). */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Group titles used across the More sub-pages — a consistent section label. */
+.group-title {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 16px 16px 6px;
+  color: var(--text-faint);
+}
+
+/* Cards / cell-groups: layer by a hairline warm outline, not a drop shadow. */
+.van-cell-group--inset {
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden;
+  border: 1px solid var(--outline-soft);
+}
+
+/* Slimmer, less obtrusive scrollbars in scroll areas. */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 139, 124, 0.32);
+  border-radius: 3px;
+}
+
+/* Active-state feedback on tappable rows. */
+.van-cell:active {
+  background: var(--surface-2);
+}

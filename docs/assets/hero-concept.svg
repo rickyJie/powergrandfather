@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-labelledby="title desc">
+  <title id="title">PowerGrandFather hero concept</title>
+  <desc id="desc">Floating terminal sessions converge into one browser based control panel.</desc>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    text {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", monospace;
+      fill: #E6E9EF;
+    }
+    .bg { fill: #0d1117; }
+    .panel { fill: #1A2027; stroke: #4A5560; stroke-width: 2; }
+    .panel-soft { fill: #111820; stroke: #2A3238; stroke-width: 1.5; }
+    .hairline { stroke: #4A5560; stroke-width: 1.5; }
+    .muted { fill: #B8BFC7; opacity: .9; }
+    .tiny { font-size: 12px; letter-spacing: .2px; }
+    .term { font-size: 13px; fill: #B8BFC7; }
+    .label { font-size: 15px; font-weight: 650; }
+    .title { font-size: 34px; font-weight: 800; letter-spacing: .4px; }
+    .tagline { font-size: 16px; fill: #B8BFC7; }
+    .accent-blue { fill: #4CA2CE; }
+    .accent-green { fill: #97CE4C; }
+    .accent-orange { fill: #E8A24C; }
+    .stroke-blue { stroke: #4CA2CE; }
+    .stroke-green { stroke: #97CE4C; }
+    .cursor { fill: #97CE4C; animation: blink 1.15s steps(2, start) infinite; }
+    .cursor.delay1 { animation-delay: .25s; }
+    .cursor.delay2 { animation-delay: .5s; }
+    @keyframes blink { 50% { opacity: .18; } }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4CA2CE"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="600" rx="6"/>
+
+  <!-- Header -->
+  <g transform="translate(60 46)">
+    <text class="title" x="0" y="0">PowerGrandFather</text>
+    <text class="tagline" x="1" y="30">One tab · N sessions · Zero chaos</text>
+    <path d="M0 47 H470" stroke="#2A3238" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Rick-ish portal hint, kept geometric -->
+  <g transform="translate(529 305)" opacity=".75">
+    <circle cx="0" cy="0" r="48" fill="none" stroke="#97CE4C" stroke-width="3" stroke-dasharray="8 9"/>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#4CA2CE" stroke-width="2" stroke-dasharray="4 8"/>
+    <text class="tiny" x="-28" y="5" fill="#B8BFC7">CSM</text>
+  </g>
+
+  <!-- Left: scattered terminal chaos -->
+  <g id="terminals">
+    <g transform="translate(74 140) rotate(-4 115 64)">
+      <rect class="panel" x="0" y="0" width="230" height="128" rx="6"/>
+      <rect class="panel-soft" x="8" y="8" width="214" height="24" rx="6"/>
+      <circle cx="24" cy="20" r="5" fill="#97CE4C"/>
+      <circle cx="42" cy="20" r="5" fill="#E8A24C"/>
+      <circle cx="60" cy="20" r="5" fill="#a44141"/>
+      <text class="term" x="16" y="55">&gt; claude --plan</text>
+      <text class="term" x="16" y="78">&gt; editing api.ts</text>
+      <rect class="cursor" x="16" y="95" width="70" height="3" rx="1"/>
+    </g>
+
+    <g transform="translate(233 102) rotate(3 111 62)">
+      <rect class="panel" x="0" y="0" width="222" height="124" rx="6"/>
+      <rect class="panel-soft" x="8" y="8" width="206" height="24" rx="6"/>
+      <circle cx="24" cy="20" r="5" fill="#E8A24C"/>
+      <circle cx="42" cy="20" r="5" fill="#97CE4C"/>
+      <circle cx="60" cy="20" r="5" fill="#4CA2CE"/>
+      <text class="term" x="16" y="55">&gt; codex inspect</text>
+      <text class="term" x="16" y="78">&gt; tests pending</text>
+      <rect class="cursor delay1" x="16" y="95" width="88" height="3" rx="1"/>
+    </g>
+
+    <g transform="translate(54 292) rotate(5 118 68)">
+      <rect class="panel" x="0" y="0" width="236" height="136" rx="6"/>
+      <rect class="panel-soft" x="8" y="8" width="220" height="24" rx="6"/>
+      <circle cx="24" cy="20" r="5" fill="#a44141"/>
+      <circle cx="42" cy="20" r="5" fill="#E8A24C"/>
+      <circle cx="60" cy="20" r="5" fill="#97CE4C"/>
+      <text class="term" x="16" y="58">&gt; agent: docs</text>
+      <text class="term" x="16" y="81">&gt; notify on done</text>
+      <text class="term" x="16" y="104">&gt; token 42%</text>
+      <rect class="cursor delay2" x="116" y="101" width="52" height="3" rx="1"/>
+    </g>
+
+    <g transform="translate(281 277) rotate(-2 120 68)">
+      <rect class="panel" x="0" y="0" width="240" height="136" rx="6"/>
+      <rect class="panel-soft" x="8" y="8" width="224" height="24" rx="6"/>
+      <circle cx="24" cy="20" r="5" fill="#97CE4C"/>
+      <circle cx="42" cy="20" r="5" fill="#4CA2CE"/>
+      <circle cx="60" cy="20" r="5" fill="#E8A24C"/>
+      <text class="term" x="16" y="58">&gt; npm run dev</text>
+      <text class="term" x="16" y="81">&gt; port :5173</text>
+      <text class="term" x="16" y="104">&gt; sync clean</text>
+      <rect class="cursor" x="16" y="113" width="64" height="3" rx="1"/>
+    </g>
+
+    <g transform="translate(142 430) rotate(-6 110 58)">
+      <rect class="panel" x="0" y="0" width="220" height="116" rx="6"/>
+      <rect class="panel-soft" x="8" y="8" width="204" height="24" rx="6"/>
+      <circle cx="24" cy="20" r="5" fill="#4CA2CE"/>
+      <circle cx="42" cy="20" r="5" fill="#97CE4C"/>
+      <circle cx="60" cy="20" r="5" fill="#E8A24C"/>
+      <text class="term" x="16" y="55">&gt; backup ready</text>
+      <text class="term" x="16" y="78">&gt; diff saved</text>
+      <rect class="cursor delay1" x="112" y="75" width="44" height="3" rx="1"/>
+    </g>
+  </g>
+
+  <text class="tiny muted" x="88" y="118">parallel session chaos</text>
+
+  <!-- Center: convergence funnel / arrow -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+    <path class="stroke-blue" d="M314 193 C398 205 437 238 491 287" stroke-width="2.2"/>
+    <path class="stroke-green" d="M456 166 C490 212 502 249 511 285" stroke-width="2.2"/>
+    <path class="stroke-blue" d="M294 360 C383 344 444 326 492 304" stroke-width="2.2"/>
+    <path class="stroke-green" d="M520 345 C490 331 476 319 492 304" stroke-width="2.2"/>
+    <path class="stroke-blue" d="M358 489 C428 430 465 362 504 319" stroke-width="2.2"/>
+    <path d="M560 305 C601 304 626 304 661 304" stroke="#4CA2CE" stroke-width="5" marker-end="url(#arrowhead)"/>
+  </g>
+
+  <g transform="translate(470 378)">
+    <rect x="0" y="0" width="124" height="36" rx="6" fill="#111820" stroke="#2A3238" stroke-width="1.5"/>
+    <text class="tiny" x="20" y="23" fill="#B8BFC7">route + tame</text>
+  </g>
+
+  <!-- Right: one browser console -->
+  <g id="console" transform="translate(665 118)">
+    <rect class="panel" x="0" y="0" width="475" height="392" rx="6"/>
+    <rect class="panel-soft" x="12" y="12" width="451" height="38" rx="6"/>
+    <circle cx="34" cy="31" r="5" fill="#a44141"/>
+    <circle cx="53" cy="31" r="5" fill="#E8A24C"/>
+    <circle cx="72" cy="31" r="5" fill="#97CE4C"/>
+    <rect x="105" y="22" width="256" height="18" rx="6" fill="#0d1117" stroke="#2A3238" stroke-width="1"/>
+    <text class="tiny" x="121" y="35" fill="#B8BFC7">localhost:CSM / control-panel</text>
+    <text class="label" x="28" y="82">One browser tab</text>
+    <text class="tiny muted" x="339" y="82">all sessions visible</text>
+
+    <g transform="translate(28 108)">
+      <rect class="panel-soft" x="0" y="0" width="125" height="72" rx="6"/>
+      <circle cx="24" cy="24" r="9" fill="#4CA2CE" opacity=".9"/>
+      <text class="label" x="16" y="53">Sessions</text>
+
+      <rect class="panel-soft" x="147" y="0" width="125" height="72" rx="6"/>
+      <path d="M169 24 h26 m-9 -9 l9 9 -9 9" stroke="#97CE4C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="label" x="163" y="53">Workflows</text>
+
+      <rect class="panel-soft" x="294" y="0" width="125" height="72" rx="6"/>
+      <path d="M329 18 l18 12 -18 12 -18 -12 z" fill="none" stroke="#E8A24C" stroke-width="2"/>
+      <text class="label" x="313" y="53">Agents</text>
+
+      <rect class="panel-soft" x="0" y="92" width="125" height="72" rx="6"/>
+      <path d="M20 44 h78" stroke="#2A3238" stroke-width="5" stroke-linecap="round"/>
+      <path d="M20 44 h48" stroke="#97CE4C" stroke-width="5" stroke-linecap="round"/>
+      <text class="label" x="16" y="26">Tokens</text>
+
+      <rect class="panel-soft" x="147" y="92" width="125" height="72" rx="6"/>
+      <path d="M181 34 a18 18 0 0 1 35 -7" stroke="#4CA2CE" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M216 27 l5 -8 l4 9" stroke="#4CA2CE" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="label" x="187" y="53">Sync</text>
+
+      <rect class="panel-soft" x="294" y="92" width="125" height="72" rx="6"/>
+      <path d="M344 18 c0 20 -13 20 -13 34 h42 c0 -14 -13 -14 -13 -34" fill="none" stroke="#E8A24C" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="352" cy="57" r="3" fill="#E8A24C"/>
+      <text class="label" x="323" y="53">Notify</text>
+
+      <rect class="panel-soft" x="0" y="184" width="125" height="72" rx="6"/>
+      <path d="M17 23 h34 l8 9 h48 v29 h-90 z" fill="none" stroke="#4CA2CE" stroke-width="2" stroke-linejoin="round"/>
+      <text class="label" x="16" y="53">Files</text>
+
+      <rect class="panel-soft" x="147" y="184" width="125" height="72" rx="6"/>
+      <circle cx="181" cy="31" r="7" fill="none" stroke="#97CE4C" stroke-width="2"/>
+      <circle cx="213" cy="31" r="7" fill="none" stroke="#97CE4C" stroke-width="2"/>
+      <path d="M188 31 h18" stroke="#97CE4C" stroke-width="2" stroke-linecap="round"/>
+      <text class="label" x="183" y="53">Ports</text>
+
+      <rect class="panel-soft" x="294" y="184" width="125" height="72" rx="6"/>
+      <path d="M325 20 h62 v34 h-62 z" fill="none" stroke="#E8A24C" stroke-width="2"/>
+      <path d="M337 20 v14 h18 v-14" fill="none" stroke="#E8A24C" stroke-width="2"/>
+      <text class="label" x="322" y="53">Backup</text>
+    </g>
+  </g>
+
+  <text class="tiny muted" x="706" y="534">order: status · notifications · automation · token usage · ports</text>
+</svg>

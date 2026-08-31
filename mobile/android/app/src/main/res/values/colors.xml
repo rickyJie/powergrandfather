@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PGF Connector palette (light) — mirrors the reference project
+         powergrandfather-responsive/android-connector for a coherent
+         "business connector" look. Dark counterparts live in values-night. -->
+
+    <color name="pgf_primary">#2952CC</color>
+    <color name="pgf_primary_dark">#17388F</color>
+    <color name="pgf_accent">#0E8A65</color>
+    <color name="pgf_surface">#F5F7FB</color>
+    <color name="pgf_surface_elevated">#FFFFFF</color>
+    <color name="pgf_stroke">#D8DEEA</color>
+    <color name="pgf_text">#172033</color>
+    <color name="pgf_text_muted">#667085</color>
+    <color name="pgf_status_bg">#E8EDF9</color>
+    <color name="pgf_status_ok_bg">#DDF3E6</color>
+    <color name="pgf_status_warn_bg">#FDF1D6</color>
+    <color name="pgf_status_err_bg">#FBE0E0</color>
+
+    <!-- Material 3 role bindings (so Material components still get proper
+         colors). We deliberately keep the palette narrow — no tertiary. -->
+    <color name="md_primary">@color/pgf_primary</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_primary_container">#DDE5F8</color>
+    <color name="md_on_primary_container">#0B1E52</color>
+    <color name="md_secondary">@color/pgf_accent</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_secondary_container">#C8ECDA</color>
+    <color name="md_on_secondary_container">#08321F</color>
+    <color name="md_tertiary">@color/pgf_primary</color>
+    <color name="md_on_tertiary">#FFFFFF</color>
+    <color name="md_tertiary_container">#DDE5F8</color>
+    <color name="md_on_tertiary_container">#0B1E52</color>
+    <color name="md_error">#B3261E</color>
+    <color name="md_on_error">#FFFFFF</color>
+    <color name="md_background">@color/pgf_surface</color>
+    <color name="md_on_background">@color/pgf_text</color>
+    <color name="md_surface">@color/pgf_surface_elevated</color>
+    <color name="md_surface_variant">#E8EDF9</color>
+    <color name="md_on_surface">@color/pgf_text</color>
+    <color name="md_on_surface_variant">@color/pgf_text_muted</color>
+    <color name="md_outline">@color/pgf_stroke</color>
+    <color name="md_outline_variant">#E8EDF9</color>
+    <color name="md_surface_container">#F0F2F8</color>
+    <color name="md_surface_container_low">#F5F7FB</color>
+    <color name="md_surface_container_high">#EBEFF6</color>
+
+    <color name="status_connecting">#B58003</color>
+    <color name="status_connected">#0E8A65</color>
+    <color name="status_error">#B3261E</color>
+    <color name="status_idle">#8B8B8B</color>
+
+    <!-- Legacy aliases still referenced by drawables -->
+    <color name="csm_blue">@color/pgf_primary</color>
+    <color name="csm_blue_dark">@color/pgf_primary_dark</color>
+    <color name="csm_bg">@color/pgf_surface</color>
+    <color name="csm_bg_dark">#0B1220</color>
+    <color name="text_primary">@color/pgf_text</color>
+    <color name="text_secondary">@color/pgf_text_muted</color>
+    <color name="success">@color/status_connected</color>
+    <color name="warning">@color/status_connecting</color>
+    <color name="danger">@color/status_error</color>
+
+    <!-- Shortcut tints kept but muted to match the connector look -->
+    <color name="shortcut_missions_bg">#E8EDF9</color>
+    <color name="shortcut_chat_bg">#DDF3E6</color>
+    <color name="shortcut_sessions_bg">#E6E1F7</color>
+    <color name="shortcut_notifications_bg">#FDECD8</color>
+    <color name="shortcut_tokens_bg">#F8DFE7</color>
+    <color name="shortcut_more_bg">#E1EEF3</color>
+    <color name="shortcut_missions_fg">@color/pgf_primary</color>
+    <color name="shortcut_chat_fg">@color/pgf_accent</color>
+    <color name="shortcut_sessions_fg">#5236B4</color>
+    <color name="shortcut_notifications_fg">#B25E00</color>
+    <color name="shortcut_tokens_fg">#A22660</color>
+    <color name="shortcut_more_fg">#2B6379</color>
+</resources>

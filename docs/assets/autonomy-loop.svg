@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="diagram-title diagram-desc">
+  <title id="diagram-title">PowerGrandFather closes the autonomy loop</title>
+  <desc id="diagram-desc">A six-stage loop of sensing, acting, judging, recovering, self-authoring, and escalating. The human remains outside the loop as a notified arbiter. A single-process SQLite foundation supports the runtime.</desc>
+
+  <defs>
+    <marker id="arrow-loop" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#5B67D6"/>
+    </marker>
+    <marker id="arrow-human" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L10 5.5 L1 10 Z" fill="#C76A3A"/>
+    </marker>
+  </defs>
+
+  <!-- Explicit light-mode canvas -->
+  <rect x="0" y="0" width="1600" height="1000" fill="#FCFCFA"/>
+
+  <!-- Closed autonomy loop: arrows sit behind the stage cards -->
+  <g fill="none" stroke="#5B67D6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-loop)">
+    <path d="M580 164 C596 150 604 144 620 139"/>
+    <path d="M980 139 C996 144 1004 150 1020 164"/>
+    <path d="M1200 305 C1438 338 1438 472 1200 510"/>
+    <path d="M1020 646 C1004 660 996 668 980 674"/>
+    <path d="M620 674 C604 668 596 660 580 646"/>
+    <path d="M400 510 C180 476 180 338 400 305"/>
+  </g>
+
+  <!-- Thesis at the quiet center of the loop -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="470" y="338" width="660" height="144" rx="24" fill="#FFFFFF" stroke="#D9DCE3" stroke-width="1.5"/>
+    <text x="800" y="370" text-anchor="middle" fill="#5B67D6" font-size="13" font-weight="700" letter-spacing="2.2">POWERGRANDFATHER / CSM</text>
+    <text x="800" y="410" text-anchor="middle" fill="#222630" font-size="27" font-weight="720">不是 Session Manager</text>
+    <text x="800" y="447" text-anchor="middle" fill="#222630" font-size="27" font-weight="720">是闭合自治循环的 Runtime</text>
+    <text x="800" y="470" text-anchor="middle" fill="#6A707C" font-size="14">human: operator → notified arbiter</text>
+  </g>
+
+  <!-- 1 · SENSE -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="220" y="100" width="360" height="205" rx="20" fill="#FFFFFF" stroke="#5B67D6" stroke-width="2"/>
+    <circle cx="548" cy="130" r="14" fill="#EEF0FF"/>
+    <text x="548" y="135" text-anchor="middle" fill="#5B67D6" font-size="13" font-weight="700">1</text>
+    <text x="246" y="142" fill="#222630" font-size="25" font-weight="720">SENSE / 感知</text>
+    <text x="246" y="174" fill="#5D6470" font-size="16.5">系统实时知道 agent 在干什么</text>
+    <path d="M246 192 H554" stroke="#E2E4E9"/>
+    <text x="246" y="220" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• EventStream · tail JSONL → 20 事件</text>
+    <text x="246" y="247" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 6 个 Claude Code hook 回调</text>
+    <text x="246" y="274" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 亚秒级状态, 不靠轮询</text>
+  </g>
+
+  <!-- 2 · ACT -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="620" y="60" width="360" height="205" rx="20" fill="#FFFFFF" stroke="#5B67D6" stroke-width="2"/>
+    <circle cx="948" cy="90" r="14" fill="#EEF0FF"/>
+    <text x="948" y="95" text-anchor="middle" fill="#5B67D6" font-size="13" font-weight="700">2</text>
+    <text x="646" y="102" fill="#222630" font-size="25" font-weight="720">ACT / 执行</text>
+    <text x="646" y="134" fill="#5D6470" font-size="16.5">无人值守跑多阶段任务</text>
+    <path d="M646 152 H954" stroke="#E2E4E9"/>
+    <text x="646" y="180" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• Workflow YAML · claude / poll stage</text>
+    <text x="646" y="207" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• Mission 状态机 · 事件驱动推进</text>
+    <text x="646" y="234" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• cron 到点自动拉起</text>
+  </g>
+
+  <!-- 3 · JUDGE -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="1020" y="100" width="360" height="205" rx="20" fill="#FFFFFF" stroke="#5B67D6" stroke-width="2"/>
+    <circle cx="1348" cy="130" r="14" fill="#EEF0FF"/>
+    <text x="1348" y="135" text-anchor="middle" fill="#5B67D6" font-size="13" font-weight="700">3</text>
+    <text x="1046" y="142" fill="#222630" font-size="25" font-weight="720">JUDGE / 判定</text>
+    <text x="1046" y="174" fill="#5D6470" font-size="16.5">agent 自己判断干得对不对</text>
+    <path d="M1046 192 H1354" stroke="#E2E4E9"/>
+    <text x="1046" y="220" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 6 个确定性 validation primitive</text>
+    <text x="1046" y="247" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• SupervisorAgent · haiku 读产出</text>
+    <text x="1046" y="274" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 只决定一件事: 要不要叫人</text>
+  </g>
+
+  <!-- 4 · RECOVER -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="1020" y="510" width="360" height="205" rx="20" fill="#FFFFFF" stroke="#5B67D6" stroke-width="2"/>
+    <circle cx="1348" cy="540" r="14" fill="#EEF0FF"/>
+    <text x="1348" y="545" text-anchor="middle" fill="#5B67D6" font-size="13" font-weight="700">4</text>
+    <text x="1046" y="552" fill="#222630" font-size="25" font-weight="720">RECOVER / 自愈</text>
+    <text x="1046" y="584" fill="#5D6470" font-size="16.5">没人守着崩了怎么办</text>
+    <path d="M1046 602 H1354" stroke="#E2E4E9"/>
+    <text x="1046" y="630" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 30s rescuer · 对账 Run/Session/PID</text>
+    <text x="1046" y="657" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• startup reap · 清离线期死掉的 PID</text>
+    <text x="1046" y="684" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• mission global_timeout</text>
+  </g>
+
+  <!-- 5 · SELF-AUTHOR -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="620" y="550" width="360" height="205" rx="20" fill="#FFFFFF" stroke="#5B67D6" stroke-width="2"/>
+    <circle cx="948" cy="580" r="14" fill="#EEF0FF"/>
+    <text x="948" y="585" text-anchor="middle" fill="#5B67D6" font-size="13" font-weight="700">5</text>
+    <text x="646" y="592" fill="#222630" font-size="22" font-weight="720">SELF-AUTHOR / 自我扩展</text>
+    <text x="646" y="624" fill="#5D6470" font-size="16.5">agent 自己写自动化, 人只给自然语言</text>
+    <path d="M646 642 H954" stroke="#E2E4E9"/>
+    <text x="646" y="670" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• NL → claude -p 生成 workflow YAML</text>
+    <text x="646" y="697" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• NL → 生成 check(window) Python</text>
+    <text x="646" y="724" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 生成后自己过 R9-R19 审查</text>
+  </g>
+
+  <!-- 6 · ESCALATE: the only warm exit from the loop -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="220" y="510" width="360" height="205" rx="20" fill="#FFF7F1" stroke="#C76A3A" stroke-width="2"/>
+    <circle cx="548" cy="540" r="14" fill="#FCE5D7"/>
+    <text x="548" y="545" text-anchor="middle" fill="#C76A3A" font-size="13" font-weight="700">6</text>
+    <text x="246" y="552" fill="#222630" font-size="25" font-weight="720">ESCALATE / 打断人</text>
+    <text x="246" y="584" fill="#7A5B4B" font-size="16.5">自治的边界</text>
+    <path d="M246 602 H554" stroke="#EDDCD1"/>
+    <text x="246" y="630" fill="#624F46" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 7 类通知 · 飞书 push · 深链接</text>
+    <text x="246" y="657" fill="#624F46" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• DIVERGED sentinel 记住你的决定</text>
+    <text x="246" y="684" fill="#624F46" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">• 不重复问同一件事</text>
+  </g>
+
+  <!-- Human stays outside the autonomy loop -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <path d="M216 648 H111" fill="none" stroke="#C76A3A" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow-human)"/>
+    <text x="163" y="614" text-anchor="middle" fill="#C76A3A" font-size="13" font-weight="650">
+      <tspan x="163" dy="0">only when</tspan>
+      <tspan x="163" dy="17">necessary</tspan>
+    </text>
+    <circle cx="72" cy="628" r="14" fill="none" stroke="#C76A3A" stroke-width="2"/>
+    <path d="M72 644 V681 M49 659 L72 650 L95 659 M56 708 L72 681 L88 708" fill="none" stroke="#C76A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="72" y="735" text-anchor="middle" fill="#222630" font-size="13" font-weight="700" letter-spacing="1.4">HUMAN</text>
+    <text x="72" y="756" text-anchor="middle" fill="#7A5B4B" font-size="12">notified arbiter</text>
+  </g>
+
+  <!-- Minimal local foundation -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+    <rect x="80" y="830" width="1440" height="120" rx="20" fill="#F5F5F2" stroke="#D9DCE3" stroke-width="1.5"/>
+    <text x="110" y="865" fill="#6A707C" font-size="12" font-weight="700" letter-spacing="2">FOUNDATION</text>
+    <text x="110" y="902" fill="#222630" font-size="20" font-weight="700">单进程 · SQLite · 无外部依赖</text>
+
+    <rect x="435" y="858" width="420" height="48" rx="12" fill="#FFFFFF" stroke="#D9DCE3"/>
+    <text x="645" y="888" text-anchor="middle" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">多 Backend Adapter (Claude Code / Codex)</text>
+
+    <rect x="875" y="858" width="250" height="48" rx="12" fill="#FFFFFF" stroke="#D9DCE3"/>
+    <text x="1000" y="888" text-anchor="middle" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Token &amp; Budget 成本闸门</text>
+
+    <rect x="1145" y="858" width="345" height="48" rx="12" fill="#FFFFFF" stroke="#D9DCE3"/>
+    <text x="1317.5" y="888" text-anchor="middle" fill="#515866" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Sync · 多 agent 配置一致</text>
+  </g>
+</svg>

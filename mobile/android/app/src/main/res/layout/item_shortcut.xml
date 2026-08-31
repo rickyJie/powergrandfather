@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Outlined shortcut card: compact icon + label, optional unread badge.
+     Uses stroke instead of a filled tinted background to match the
+     PGF Connector reference look. -->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_shortcut"
+    style="@style/PGF.Card.Shortcut"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:gravity="start|top">
+
+            <ImageView
+                android:id="@+id/shortcut_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_missions"
+                tools:tint="@color/shortcut_missions_fg" />
+
+            <TextView
+                android:id="@+id/shortcut_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="@color/pgf_text"
+                tools:text="任务" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/shortcut_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/badge_bg"
+            android:minWidth="18dp"
+            android:minHeight="18dp"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="1dp"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:visibility="gone"
+            tools:text="3"
+            tools:visibility="visible" />
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

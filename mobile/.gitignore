@@ -1,0 +1,28 @@
+# Nested gitignore — scoped to mobile/, keeps main repo .gitignore untouched.
+
+# Build output
+frontend/dist/
+frontend/node_modules/
+frontend/.vite/
+
+# npm run from mobile/ instead of mobile/frontend/ lands here. Nothing in the
+# tree needs it, but 40k untracked files one `git add -A` away from the index
+# is not a thing to leave lying around.
+node_modules/
+
+# Symlink so vitest can resolve mobile/frontend/node_modules from specs
+# at mobile/tests/frontend/**. Created once by contributors post-checkout;
+# not tracked, not needed at runtime.
+tests/node_modules
+
+# Wrapper runtime state (start_with_mobile.sh)
+csm-mobile.pid
+csm-mobile.log
+
+# Vitest cache
+frontend/.vitest-cache/
+frontend/coverage/
+
+# Editor / OS noise
+.DS_Store
+*.swp

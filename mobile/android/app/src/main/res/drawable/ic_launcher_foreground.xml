@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PGF launcher foreground — big white "P" on transparent (bg color
+     supplied by the adaptive-icon layer). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,32h20c11.66,0 18.33,6.33 18.33,16c0,10.33 -7.33,16.67 -18.83,16.67h-7.5V76H38zM50,42v12.67h6.83c4.67,0 7.33,-2.33 7.33,-6.5c0,-4 -2.67,-6.17 -7.33,-6.17z" />
+</vector>

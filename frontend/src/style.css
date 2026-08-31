@@ -1,0 +1,485 @@
+/* ============================================================
+   PGF · Style B · Linear-tier Minimal
+   Design tokens + base reset. Loaded once via main.ts.
+   ============================================================ */
+
+/* Self-hosted fonts — Google Fonts @import failed silently in some networks
+   (fonts.googleapis.com unreachable), leaving document.fonts empty. Then
+   FontFaceSet.check() would trivially return true (no faces to load) and
+   xterm's Geist-Mono-detection branch was picking Geist Mono as intended
+   but the browser had nothing to render with → fell to system monospace.
+   Files live at frontend/public/fonts/ (served from /fonts/*). */
+@font-face {
+  font-family: 'Geist'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/fonts/Geist-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist Mono'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Geist Mono'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/fonts/GeistMono-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Newsreader'; font-style: normal; font-weight: 400 500; font-display: swap;
+  src: url('/fonts/Newsreader-Latin.woff2') format('woff2');
+}
+
+:root {
+  /* Color — light theme defaults */
+  --canvas: #F7F6F3;
+  --card: #FFFFFF;
+  --border: #EAEAEA;
+  --border-strong: #DDDCD7;
+  --ink: #2F3437;
+  --ink-2: #555;
+  --ink-mute: #787774;
+  --ink-faint: #A6A29B;
+
+  /* Pastel state tags */
+  --pastel-red-bg: #FDEBEC;     --pastel-red-fg: #9F2F2D;
+  --pastel-blue-bg: #E1F3FE;    --pastel-blue-fg: #1F6C9F;
+  --pastel-green-bg: #EDF3EC;   --pastel-green-fg: #346538;
+  --pastel-yellow-bg: #FBF3DB;  --pastel-yellow-fg: #956400;
+
+  /* Shadow */
+  --shadow: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-faint: 0 1px 2px rgba(0,0,0,0.02);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04);
+
+  /* Accent — added by ui_review_auto_1 F11 to give the flat panel a focal
+     colour for primary actions, active states, and highlights.
+     Indigo works with the existing pastel state tags without clashing. */
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-soft-bg: #eef2ff;
+  --accent-soft-fg: #3730a3;
+
+  /* Type scale — serif for section titles / KPIs, mono for data,
+     sans for chrome. Serif contrasts against the Geist Mono heaviness
+     and gives display-sized text an editorial feel. */
+  --font-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+
+  /* Easing */
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark theme — picked up automatically via prefers-color-scheme OR opt-in
+   via `<html data-theme="dark">`. Tokens kept in the same names so no
+   component needs changes. Pastels are dimmed-down so they don't glow
+   against the dark backdrop. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #1A1A1B;
+    --card: #232323;
+    --border: #2F2F30;
+    --border-strong: #3B3B3C;
+    --ink: #E5E4E0;
+    --ink-2: #B8B6B0;
+    --ink-mute: #8A8780;
+    --ink-faint: #5F5D58;
+
+    --pastel-red-bg: #3A2425;     --pastel-red-fg: #F0A09E;
+    --pastel-blue-bg: #1F2D3A;    --pastel-blue-fg: #88C5EE;
+    --pastel-green-bg: #1F2E22;   --pastel-green-fg: #92C49A;
+    --pastel-yellow-bg: #322C18;  --pastel-yellow-fg: #DCBC73;
+
+    --shadow: 0 2px 8px rgba(0,0,0,0.4);
+    --shadow-faint: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 14px rgba(0,0,0,0.42), 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.2);
+
+    --accent: #818cf8;
+    --accent-hover: #a5b4fc;
+    --accent-soft-bg: #2b2d5a;
+    --accent-soft-fg: #c7d2fe;
+  }
+}
+:root[data-theme="dark"] {
+  --canvas: #1A1A1B;
+  --card: #232323;
+  --border: #2F2F30;
+  --border-strong: #3B3B3C;
+  --ink: #E5E4E0;
+  --ink-2: #B8B6B0;
+  --ink-mute: #8A8780;
+  --ink-faint: #5F5D58;
+
+  --pastel-red-bg: #3A2425;     --pastel-red-fg: #F0A09E;
+  --pastel-blue-bg: #1F2D3A;    --pastel-blue-fg: #88C5EE;
+  --pastel-green-bg: #1F2E22;   --pastel-green-fg: #92C49A;
+  --pastel-yellow-bg: #322C18;  --pastel-yellow-fg: #DCBC73;
+
+  --shadow: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-faint: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.42), 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.2);
+
+  --accent: #818cf8;
+  --accent-hover: #a5b4fc;
+  --accent-soft-bg: #2b2d5a;
+  --accent-soft-fg: #c7d2fe;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #app {
+  height: 100%;
+  font-family: 'Geist', 'SF Pro Display', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--canvas);
+}
+
+button {
+  font: inherit;
+  font-size: 13px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  /* Split the transition so :active feels *instant* (60ms transform) while
+   * hover polish (bg / border / shadow) stays soft-eased. `transition: all
+   * 200ms` was the previous default and made every click feel laggy because
+   * the transform reversal from :active back to base also took 200ms, which
+   * reads as "the button doesn't know I clicked". */
+  transition:
+    background 120ms var(--ease-soft),
+    border-color 120ms var(--ease-soft),
+    color 120ms var(--ease-soft),
+    box-shadow 120ms var(--ease-soft),
+    transform 60ms var(--ease-soft),
+    opacity 120ms var(--ease-soft);
+}
+button:hover { box-shadow: var(--shadow-faint); transform: translateY(-1px); }
+button:active { transform: scale(0.97); }
+button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+button.primary {
+  background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 500;
+}
+button.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+button.active {
+  background: var(--ink); color: var(--card); border-color: var(--ink);
+}
+
+input, textarea, select {
+  font: inherit; font-size: 13px;
+  background: var(--card); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 5px 10px;
+  transition: border-color 200ms var(--ease-soft);
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---- Reusable typography utilities ---- */
+.serif {
+  font-family: 'Newsreader', 'Lyon Text', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.mono { font-family: 'Geist Mono', 'SF Mono', monospace; font-size: 12px; }
+.label {
+  font-size: 11px; color: var(--ink-mute);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+/* ---- Tags + badges ----
+   One shape everywhere: 4px-radius mono chip. Used across sidebar rows,
+   ended/orphan cards, chip strip, chat message meta. Do not fork this
+   dialect — three earlier variants (.hist-pill, .tag pill, .tag.orphaned
+   inline) were consolidated 2026-07-25 per Sessions UI redesign spec. */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 14px;
+}
+.tag.running, .tag.active   { background: var(--pastel-green-bg); color: var(--pastel-green-fg); }
+.tag.waiting, .tag.failed,
+.tag.conflict, .tag.crashed { background: var(--pastel-red-bg); color: var(--pastel-red-fg); }
+.tag.idle, .tag.pending     { background: var(--pastel-yellow-bg); color: var(--pastel-yellow-fg); }
+.tag.orphaned               { background: var(--pastel-yellow-bg); color: var(--pastel-yellow-fg); }
+.tag.exited, .tag.foreign   { background: var(--canvas); color: var(--ink-mute); border: 1px solid var(--border); }
+.tag.info, .tag.registered,
+.tag.succeeded              { background: var(--pastel-blue-bg); color: var(--pastel-blue-fg); }
+
+.badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px;
+  background: var(--pastel-red-bg); color: var(--pastel-red-fg);
+  border-radius: 9px;
+  font-size: 10px; font-weight: 600;
+  padding: 0 5px;
+}
+
+/* ---- State card primitive (used by ended / orphan / empty-state cards
+       across Sessions, Tokens, Automation, Ports). Shape mirrors
+       files.py:648-692 preview state cards so all "empty / final state"
+       surfaces speak the same visual language. ---- */
+.state-card {
+  padding: 40px 28px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  text-align: center;
+  max-width: 520px;
+  margin: 60px auto;
+  box-shadow: var(--shadow-faint);
+}
+.state-card .state-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.state-card .state-icon svg { width: 24px; height: 24px; }
+.state-card.tone-danger  .state-icon { background: var(--pastel-red-bg);    color: var(--pastel-red-fg); }
+.state-card.tone-warn    .state-icon { background: var(--pastel-yellow-bg); color: var(--pastel-yellow-fg); }
+.state-card.tone-info    .state-icon { background: var(--pastel-blue-bg);   color: var(--pastel-blue-fg); }
+.state-card.tone-neutral .state-icon { background: var(--canvas);           color: var(--ink-mute); }
+.state-card h2 {
+  margin: 0 0 6px;
+  font-family: 'Newsreader', serif; font-weight: 500;
+  font-size: 18px; color: var(--ink);
+}
+.state-card .state-body {
+  color: var(--ink-mute);
+  line-height: 1.55; font-size: 13px;
+  margin: 0 0 20px;
+}
+.state-card .state-body code {
+  background: var(--canvas);
+  padding: 1px 6px; border-radius: 3px;
+  font-family: 'Geist Mono', monospace; font-size: 12px;
+  color: var(--ink); word-break: break-all;
+}
+.state-card .state-body ul {
+  text-align: left; margin: 12px 0; padding-left: 20px;
+}
+.state-card .state-body li { margin: 4px 0; }
+.state-card .state-actions {
+  display: inline-flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+}
+.badge.amber { background: var(--pastel-yellow-bg); color: var(--pastel-yellow-fg); }
+
+/* ---- Filter pill group (segmented control) ---- */
+.filter-group {
+  display: inline-flex; gap: 4px;
+  padding: 2px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.filter-group button {
+  border: none; background: transparent;
+  padding: 4px 10px;
+}
+/* Neutralise the global button:hover/:active polish (shadow + translate/scale)
+ * with matching-specificity rules that come later in source order. */
+.filter-group button:hover,
+.filter-group button:active {
+  box-shadow: none;
+  transform: none;
+}
+.filter-group button:hover { background: var(--canvas); }
+.filter-group button.active { background: var(--ink); color: var(--card); border-radius: 6px; }
+
+/* ---- Toolbar three-section (legacy — used by pages that haven't
+       adopted the two-tier pattern yet) ---- */
+.toolbar {
+  display: flex; align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+}
+.toolbar > .right { margin-left: auto; display: flex; gap: 6px; }
+
+/* ---- Two-tier sticky toolbar (Sessions page primary framing).
+   Tier 1 = page title + primary filter + search. Tier 2 = subordinate
+   controls (grouping, project mgr, purge, refresh). Both are sticky
+   with a blurred background so the sidebar tree stays anchored while
+   the content scrolls. Mirrors the file-preview header language. */
+.sess-page > .toolbar {
+  position: sticky; top: 0; z-index: 5;
+  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 16px; align-items: center;
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.sess-page > .toolbar-sub {
+  position: sticky; top: 52px; z-index: 4;
+  padding: 6px 20px;
+  display: flex; gap: 8px; align-items: center;
+  background: color-mix(in srgb, var(--canvas) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.sess-page-title {
+  font-family: 'Newsreader', serif; font-weight: 500;
+  font-size: 18px; color: var(--ink);
+  line-height: 1;
+}
+.sess-page > .toolbar .primary-filter { justify-self: start; }
+.sess-page > .toolbar .search-wrap {
+  position: relative; justify-self: end;
+  width: 100%; max-width: 320px;
+}
+.sess-page > .toolbar .search-wrap .search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px; color: var(--ink-mute);
+  pointer-events: none;
+}
+.sess-page > .toolbar .search-input {
+  width: 100%;
+  height: 32px; padding: 0 12px 0 32px;
+  background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--ink);
+  font-size: 13px;
+}
+.sess-page > .toolbar .search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft-bg);
+}
+
+/* Tier-2 chrome — smaller, subordinate. */
+.sess-page > .toolbar-sub button,
+.sess-page > .toolbar-sub .filter-group {
+  height: 26px; font-size: 12px;
+}
+.sess-page > .toolbar-sub .filter-group button { padding: 2px 8px; }
+.sess-page > .toolbar-sub .tb-sub-primary {
+  height: 28px; padding: 0 12px;
+  font-weight: 500;
+}
+.sess-page > .toolbar-sub .tb-sub-label {
+  color: var(--ink-mute); font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.sess-page > .toolbar-sub .tb-sep {
+  width: 1px; height: 18px; background: var(--border);
+  margin: 0 4px;
+}
+.sess-page > .toolbar-sub .tb-icon-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 0 10px;
+  color: var(--ink-mute); background: transparent;
+  border: 1px solid transparent; border-radius: 6px;
+}
+.sess-page > .toolbar-sub .tb-icon-btn:hover {
+  color: var(--ink); background: var(--card); border-color: var(--border);
+  box-shadow: none; transform: none;
+}
+.sess-page > .toolbar-sub .tb-icon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.sess-page > .toolbar-sub .tb-icon-btn svg { width: 14px; height: 14px; }
+/* Destructive-action variant (e.g. Clear history — permanent DB delete). */
+.sess-page > .toolbar-sub .tb-icon-btn.danger { color: var(--pastel-red-fg, #b91c1c); }
+.sess-page > .toolbar-sub .tb-icon-btn.danger:hover {
+  color: #fff; background: var(--pastel-red-fg, #b91c1c); border-color: var(--pastel-red-fg, #b91c1c);
+}
+
+/* ---- Card / panel ---- */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* ---- With-drawer container ---- */
+.with-drawer {
+  display: grid;
+  grid-template-columns: 1fr 0;
+  transition: grid-template-columns .25s var(--ease-soft);
+  height: 100%;
+}
+.with-drawer.open { grid-template-columns: 1fr 320px; }
+.detail-drawer {
+  background: var(--card);
+  border-left: 1px solid var(--border);
+  padding: 20px;
+  overflow: auto;
+}
+.with-drawer:not(.open) .detail-drawer { display: none; }
+
+/* ---- Empty / stub ---- */
+.stub { color: var(--ink-faint); font-style: italic; padding: 4px; }
+.empty { text-align: center; color: var(--ink-faint); padding: 32px 16px; }
+
+/* ---- Scrollbar (subtle) ---- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+/* ---- Mobile application shell primitives ----
+   These are deliberately global: several older scoped views carry desktop
+   min-width values on their dialogs. The initial PWA must never render a
+   dialog wider than the phone viewport while those views are migrated one by
+   one to dedicated cards/sheets. */
+@media (max-width: 640px) {
+  html, body, #app { width: 100%; height: 100%; overflow: hidden; }
+  body { overscroll-behavior: none; }
+  button, a, input, select, textarea { touch-action: manipulation; }
+
+  .modal-backdrop {
+    padding: 8px 8px 0 !important;
+    align-items: flex-end !important;
+  }
+  .modal,
+  .spm-modal,
+  .sap-modal {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 12px) !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+  .with-drawer { position: relative; }
+  .with-drawer.open { grid-template-columns: 1fr; }
+  .with-drawer.open > .detail-drawer {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    border-left: 0;
+  }
+}

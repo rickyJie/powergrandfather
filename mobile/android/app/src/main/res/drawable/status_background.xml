@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rounded pill background for the dashboard status label. The fill is
+     tinted at runtime by DashboardActivity depending on state
+     (idle/connecting/connected/error). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="12dp" />
+    <solid android:color="@color/pgf_status_bg" />
+</shape>
