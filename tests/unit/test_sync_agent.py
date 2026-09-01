@@ -11,6 +11,7 @@ Real Anthropic calls are mocked. Covers:
 from __future__ import annotations
 
 import asyncio
+import sys
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
@@ -65,8 +66,10 @@ def test_disabled_when_env_flag_set(monkeypatch):
 def test_enabled_with_key_and_no_disable_flag(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test")
     monkeypatch.delenv("CSM_SYNC_DISABLED", raising=False)
-    # Anthropic SDK is installed in the csm env; without it, .enabled would
-    # still be True but the client would be None. We only assert enabled here.
+    # The SDK is an optional fallback dependency, so a clean CI environment
+    # must not depend on it happening to be installed globally.
+    fake_anthropic = SimpleNamespace(AsyncAnthropic=lambda **_kwargs: MagicMock())
+    monkeypatch.setitem(sys.modules, "anthropic", fake_anthropic)
     a = SyncAgent(sessionmaker=MagicMock())
     assert a.enabled is True
 

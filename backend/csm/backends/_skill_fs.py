@@ -219,17 +219,27 @@ def write_skill_bundle(skills_dir: Path | None, spec: dict[str, Any]) -> dict[st
 
     body_md = str(spec["body_md"])
     files = _coerce_files(spec.get("files"))
+    # Keep filelock's persistent sidecar outside the skill directory. Newer
+    # filelock releases deliberately retain lock files after release; placing
+    # the sidecar beside SKILL.md makes it part of the bundle on the next read.
+    # One hidden lock per skill preserves the existing serialization contract
+    # without leaking CSM bookkeeping into the materialised skill.
+    skill_lock = skill_path.parent / f".{name}.csm-sync.lock"
 
     written: list[str] = []
 
     # SKILL.md first: if we die partway, the skill is at worst back to the
     # old single-file shape rather than a bundle with no entry point.
-    atomic_write_with_hash_guard(skill_path / SKILL_MD, body_md.encode("utf-8"))
+    atomic_write_with_hash_guard(
+        skill_path / SKILL_MD,
+        body_md.encode("utf-8"),
+        lock_path=skill_lock,
+    )
     written.append(SKILL_MD)
 
     for f in files:
         target = resolve_within(skill_path, f.rel_path)
-        atomic_write_with_hash_guard(target, f.content)
+        atomic_write_with_hash_guard(target, f.content, lock_path=skill_lock)
         # atomic_write creates its temp file 0600 and renames it into place,
         # so the mode has to be (re)applied every time — not just on create.
         os.chmod(target, f.mode & 0o7777)

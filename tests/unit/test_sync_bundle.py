@@ -58,6 +58,7 @@ def test_walk_excludes_build_artefacts(skill_dir):
     (skill_dir / ".git").mkdir()
     (skill_dir / ".git" / "HEAD").write_text("ref: refs/heads/main")
     (skill_dir / "scripts" / "stale.pyc").write_bytes(b"junk")
+    (skill_dir / "scripts" / "stale.py.lock").write_bytes(b"lock bookkeeping")
     (skill_dir / ".DS_Store").write_bytes(b"junk")
 
     rels = [f.rel_path for f in walk_skill_bundle(skill_dir)[0]]

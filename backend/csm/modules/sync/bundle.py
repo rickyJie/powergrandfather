@@ -55,7 +55,7 @@ EXCLUDED_DIRS = frozenset({
     ".ruff_cache",
     ".venv",
 })
-EXCLUDED_SUFFIXES = frozenset({".pyc", ".pyo", ".pyd", ".so", ".o"})
+EXCLUDED_SUFFIXES = frozenset({".pyc", ".pyo", ".pyd", ".so", ".o", ".lock"})
 EXCLUDED_NAMES = frozenset({".DS_Store", "Thumbs.db", IGNORE_FILE})
 
 # Caps. Exceeding either is reported, never silently truncated — a bundle
