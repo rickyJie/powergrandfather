@@ -77,7 +77,7 @@ Everything attaches to `app.state.*` so API routes can reach it via `request.app
 
 ### EventStream is the spine
 
-`backend/csm/core/event_stream.py` tails `~/.claude/projects/**/*.jsonl` every 5s and derives ~11 typed events (session.started, usage.recorded, message.assistant_done, etc.). It is an **in-memory pub/sub bus** — events are not persisted by EventStream itself. Consumers (`NotificationBus`, `TokenAggregator`, `AutomationRunner`, `SupervisorAgent`) subscribe and persist what they care about.
+`backend/csm/core/event_stream.py` tails `~/.claude/projects/**/*.jsonl` every 5s and publishes typed events (session.started, usage.recorded, message.assistant_done, etc.). It is an **in-memory pub/sub bus** — events are not persisted by EventStream itself. Consumers (`NotificationBus`, `TokenAggregator`, `AutomationRunner`, `SupervisorAgent`) subscribe and persist what they care about.
 
 When adding a new event type, edit `core/events.py` (enum + payload) and `core/event_stream.py` (derivation logic), then update subscribers.
 

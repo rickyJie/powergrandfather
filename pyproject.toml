@@ -4,8 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "csm"
-version = "0.1.0"
-description = "PowerGrandFather - Claude Session Manager"
+version = "0.9.3"
+description = "Local-first console for Claude Code and Codex CLI sessions and unattended workflows"
+readme = "README.md"
+license = "MIT"
+keywords = [
+    "claude-code",
+    "codex-cli",
+    "coding-agents",
+    "agent-orchestration",
+    "workflow-automation",
+    "session-manager",
+    "local-first",
+]
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115",
@@ -50,6 +61,11 @@ dev = [
     "mypy>=1.13",
     "pip-audit>=2.7",
 ]
+
+[project.urls]
+Homepage = "https://github.com/rickyJie/powergrandfather"
+Repository = "https://github.com/rickyJie/powergrandfather"
+Issues = "https://github.com/rickyJie/powergrandfather/issues"
 
 [tool.setuptools.packages.find]
 where = ["backend"]

@@ -2,9 +2,9 @@
 
 # PowerGrandFather
 
-**管住一堆并行 CLI agent 的本地控制台**
+**Claude Code 与 Codex CLI 的本地 Agent 控制台**
 
-<sub>Claude Code · Codex · 一个浏览器标签页</sub>
+<sub>集中管理并行 CLI agent · 定时运行带验证的工作流 · 在手机上及时介入</sub>
 
 ![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)
 ![Node 18+](https://img.shields.io/badge/node-18+-339933?logo=nodedotjs&logoColor=white)
@@ -34,6 +34,64 @@ PowerGrandFather 把这些窗口收进一个页面：谁在跑、谁卡住了、
 - **让它半夜自己干活** —— 写个多步任务挂上 cron，早上起来看结果
 - **人不在电脑前也能接上话** —— 手机装成 App，权限弹窗直接在手机上点
 - **知道钱烧在哪** —— 按项目 / 模型 / 工具拆开看，撞限额之前有预警
+
+## 两个月内部实战
+
+这不是一个周末赶出来的 dashboard demo。公开发布前，维护者已经在自己的
+私有实例上持续使用 PowerGrandFather 两个月：
+
+| 内部实战数据（截至 2026-08-31） | 结果 |
+|---|---:|
+| 管理过的 Claude Code / Codex 会话 | 356 |
+| Agent 累计工作时间 | 350+ 小时 |
+| Workflow stage 执行 | 95 / 103 成功 |
+| 内部反馈 | 59 / 75 已解决 |
+
+这些是维护者自有实例的聚合数据，不是从公开用户处采集的遥测。统计口径见
+[内部实战说明](docs/dogfooding.zh-CN.md)。
+
+## 快速开始
+
+公开 CI 目前覆盖 Ubuntu，其他平台暂不在兼容性保证范围内。需要提前装好
+Git、Python 3.11+、Node 18+、conda，以及已经登录的 Claude Code 和/或
+Codex CLI。
+
+```bash
+git clone https://github.com/rickyJie/powergrandfather.git
+cd powergrandfather
+conda create -n csm python=3.11 -y
+conda activate csm
+pip install -e .
+alembic upgrade head
+npm --prefix frontend ci
+npm --prefix frontend run build
+./scripts/start.sh
+```
+
+打开 `http://localhost:8000`。停止服务：`./scripts/stop.sh`。
+
+> **命名说明：** PowerGrandFather 是产品名。Python 包、conda 环境和
+> `CSM_*` 配置项为了兼容仍沿用内部旧名 **CSM（Claude Session Manager）**；
+> 两个名字指的是同一个应用。
+
+<details>
+<summary>装不上？让 AI agent 自己装</summary>
+
+在仓库根目录把这句话丢给 Claude Code 或 Codex：
+
+> 读一下这个仓库根目录的 `LLMS.md` §0，按顺序把 PowerGrandFather 装起来，
+> 每一步用 §0 的验证命令确认，跑完告诉我可以访问的 URL。
+
+它会自己处理 conda 环境、alembic 多头、端口冲突、前端构建失败这些常见问题。
+
+想确认装好了：
+
+```bash
+curl -sf http://localhost:8000/api/health -H 'X-CSM-Client: 1' | head -c 80
+curl -sf http://localhost:8000/ | grep -q 'id="app"' && echo "SPA OK"
+```
+
+</details>
 
 <details>
 <summary><strong>为什么叫 PowerGrandFather？</strong></summary>
@@ -67,13 +125,13 @@ agent 最有价值的能力不是回答得更快，是**替你跑完一件你不
 
 用户只有一个。就是你。
 
-所以：**一个 uvicorn 进程，一个 SQLite 文件。** 没有 broker，没有外部调度器，没有第二个数据存储。大约 24 个 API router、约 11 种类型化事件、一条所有模块都订阅的内存 pub/sub 总线。部署就是 `./scripts/start.sh`，备份就是 `csm.db`。想反驳这个决定，理由写在 [ADR-0002](docs/decisions/0002-single-process-monolith.md) 里。
+所以：**一个 uvicorn 进程，一个 SQLite 文件。** 没有 broker，没有外部调度器，没有第二个数据存储。模块之间由类型化事件流和一条内存 pub/sub 总线连接。部署就是 `./scripts/start.sh`，备份就是 `csm.db`。想反驳这个决定，理由写在 [ADR-0002](docs/decisions/0002-single-process-monolith.md) 里。
 
 代价是真实的，而且明说：没有多用户、没有权限模型、没有任何横向扩展。这些不在 roadmap 上 —— 它们就是这笔交易的价格。
 
 ### 它是被它自己管理的东西造出来的
 
-这个工具的第一版不是手写的。是 Claude Code 自己写的：cron 驱动、全程无人值守、27 小时窗口，其中约 9-10 小时是真正在干活，产出了骨架、端到端修复和功能实现。过程中出了 4 个 P0/P1 bug，四个都是它自己发现、自己回滚、自己重做的。未经修饰的痕迹全在 `git log` 里。
+这个工具的第一版不是手写的。是 Claude Code 自己写的：cron 驱动、全程无人值守、27 小时窗口，其中约 9-10 小时是真正在干活，产出了骨架、端到端修复和功能实现。过程中出了 4 个 P0/P1 bug，四个都是它自己发现、自己回滚、自己重做的。公开仓库是经过脱敏的源码快照，所以简短的 commit 历史不等于真实开发历史；可公开的时间线和统计方法整理在[内部实战说明](docs/dogfooding.zh-CN.md)里。
 
 从那以后，每一个功能都是**用 PowerGrandFather 管着写 PowerGrandFather 的那些 Claude 会话**做出来的。这不是一句营销话术，就是开发流程本身 —— 也是为什么它的手感长成现在这样：同时跑八个 agent 时任何别扭的地方都被修掉了，因为那个同时跑八个 agent 的人正在用它开发它。
 
@@ -81,7 +139,8 @@ agent 最有价值的能力不是回答得更快，是**替你跑完一件你不
 
 ## 和别的工具比
 
-这个领域有几个做得不错的工具，它们和这个不是同一件东西。下面的事实取自各自的 README，判断是我的。
+这个领域有几个做得不错的工具，它们和这个不是同一件东西。下面的事实于
+2026-08-31 对照各自 README 核对，判断是我的。
 
 **[Orca](https://github.com/stablyai/orca)** —— 原生桌面 ADE（Electron，MIT）。核心思路是 **git worktree 隔离**：每个 agent 任务独占一个 worktree 和分支，可以把同一个 prompt 扇出给几个 agent，再挑一个结果 merge 掉。支持 30+ 种 CLI agent，有后台 PTY daemon、GitHub 和 Linear 集成、手机伴侣 App。它没有调度、没有无人值守执行 —— Orca 是**你坐在这儿**指挥舰队用的。
 
@@ -118,39 +177,6 @@ agent 最有价值的能力不是回答得更快，是**替你跑完一件你不
 ### 明确不做的事
 
 多用户、或者比一个共享 token 更复杂的权限模型 · git worktree 隔离 · 托管 / 云版本 · 配额百分比指标（原因见 [ADR-0001](docs/decisions/)）· 取代你的编辑器。
-
----
-
-## ⚡ 5 分钟装完
-
-```bash
-# 前置：Python ≥ 3.11 · Node ≥ 18 · conda
-conda create -n csm python=3.11 -y && conda activate csm
-pip install -e ".[dev]"
-alembic upgrade head
-(cd frontend && npm install && npm run build)
-./scripts/start.sh
-```
-
-打开 `http://localhost:8000` 就能用了。停：`./scripts/stop.sh`。
-
-<details>
-<summary>装不上？让 AI agent 自己装</summary>
-
-丢一句给你正在跑的 Claude Code / Codex：
-
-> 读一下这个仓库根目录的 `LLMS.md` §0，按顺序把 CSM 装起来，每一步用 §0 的验证命令确认，跑完告诉我可以访问的 URL。
-
-它会自己处理 conda 环境、alembic 多头、端口冲突、前端构建失败这些常见问题。
-
-想确认装好了：
-
-```bash
-curl -sf http://localhost:8000/api/health -H 'X-CSM-Client: 1' | head -c 80
-curl -sf http://localhost:8000/ | grep -q 'id="app"' && echo "SPA OK"
-```
-
-</details>
 
 ---
 

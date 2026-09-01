@@ -1,6 +1,6 @@
 {
   "name": "csm-mobile",
-  "version": "0.1.0",
+  "version": "0.9.3",
   "private": true,
   "type": "module",
   "description": "CSM (Claude Session Manager) mobile SPA — Vue 3 + Vite + Vant 4",

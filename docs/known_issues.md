@@ -1,31 +1,42 @@
-# Known issues / v2 deferrals
+# Known limits and deferred work (v0.9.3)
 
-These were explicitly scoped out of v1 per the architectural cut list.
+This page describes the current public snapshot. It is intentionally narrower
+than a general-purpose agent platform.
 
-## Functional gaps
+## Product limits
 
-- **No Onboarding Agent.** Task definitions are validated by YAML schema only; no LLM-driven completeness check at registration time.
-- **No Supervisor Agent.** `auto_needs_review` notification type exists in the enum but is never auto-emitted.
-- **No quota% estimation.** Token dashboard shows absolute usage only; alert rules are user-configured absolute thresholds. Reason: historical-hit sample (n≈9 over 6 days) was too sparse for a reliable denominator.
-- **No predictive token alerts.** Same reason as above; only fires on absolute threshold cross.
-- **No Lark IM sink.** Notification Bus has only In-app WebSocket sink. The sink interface is pluggable; adding Lark is a single new file.
-- **No do-not-disturb window.** All notifications fire immediately.
-- **No `{var}` substitution in prompt templates.** Task launcher uses literal `prompt_template`; the `parameters` dict is stored on Run but not interpolated.
-- **No calendar view for schedules.** Lists only; cron string is the input.
+- **Single-user only.** There is no account system, role model or tenant
+  isolation. Keep the default loopback bind unless you have followed the
+  README's remote-access guidance.
+- **No git-worktree isolation.** Sessions operate directly in the selected
+  working directory. PowerGrandFather does not create a branch or worktree per
+  task.
+- **No quota-percentage estimation.** The token dashboard reports observed
+  usage and user-configured absolute thresholds. Provider quota denominators
+  are not inferred from sparse rate-limit samples.
+- **No predictive token alerts.** Alerts fire on configured thresholds rather
+  than forecasting a future quota breach.
+- **No hosted service or horizontal scaling.** The supported deployment shape
+  is one FastAPI process and one local SQLite database.
 
-## Runtime gaps
+## Operational limits
 
-- **Terminal WebSocket has no auto-reconnect** if backend restarts mid-session.
-- **No backpressure on attached WebSockets.** A slow client could in theory block the reader loop. Acceptable for single-user local deployment.
-- **No hourly rollup job.** `hourly_rollup` table exists for schema stability; not yet populated by a background job. Will be needed once raw events hit ≥7 days of accumulation.
-- **No raw token event TTL.** Same as above.
-- **`session_id` reconciliation between PTY spawn and JSONL filename is partial.** Today we know `Session.id` (our uuid) and `EventStream` knows `claude_session_id` (JSONL stem) but the binding step is not automated — `Session.claude_session_id` stays null until set explicitly.
+- **Public CI currently covers Ubuntu only.** macOS and Windows are not part of
+  the v0.9.3 compatibility guarantee.
+- **mypy is not run in CI.** It remains an optional development dependency.
+- **No Docker or systemd packaging.** Use `scripts/dev.sh` or
+  `scripts/start.sh`.
+- **The Android release key is not public.** A fresh clone can build a
+  debug-signed APK for side-loading, but it cannot upgrade an APK signed with
+  the maintainer's release key.
 
-## Operational gaps
+## Implemented since the original cut list
 
-- **mypy not run in CI.** Optional dep; installs from pypi.org rather than internal devpi.
-- **No docker / systemd integration.** Run with `scripts/dev.sh` or `scripts/start.sh` (added in P11).
-- **No metrics / Prometheus export.** Logs only.
+Older copies of this document listed the following as deferred; they are
+present in v0.9.3: Supervisor Agent review, Lark notifications with
+do-not-disturb hours, schedule calendar, prompt parameter substitution,
+terminal WebSocket reconnection, hourly token rollups with configurable raw
+event retention, and a Prometheus-format metrics endpoint.
 
 ## Sync v2 agent-driven (added 2026-08-03)
 

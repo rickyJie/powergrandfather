@@ -2,9 +2,9 @@
 
 # PowerGrandFather
 
-**A local console for a fleet of parallel CLI agents**
+**Local-first mission control for Claude Code and Codex CLI**
 
-<sub>Claude Code · Codex · one browser tab</sub>
+<sub>Monitor parallel CLI agents · run validated workflows on schedule · step in from your phone</sub>
 
 ![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)
 ![Node 18+](https://img.shields.io/badge/node-18+-339933?logo=nodedotjs&logoColor=white)
@@ -43,6 +43,66 @@ bed, and only get woken for the things that genuinely need you.
   permission prompts from bed
 - **Somewhere the money went** — broken down by repo, model and tool, with a
   warning before you hit the ceiling
+
+## Proven in daily use
+
+This is not a weekend dashboard demo. Before the public release, the
+maintainer dogfooded PowerGrandFather for two months on a private instance:
+
+| Internal dogfooding, through 2026-08-31 | Result |
+|---|---:|
+| Managed Claude Code and Codex sessions | 356 |
+| Cumulative agent time | 350+ hours |
+| Workflow stage executions | 95 / 103 succeeded |
+| Feedback items | 59 / 75 resolved |
+
+These are aggregate figures from the maintainer's own instance, not telemetry
+collected from public users. See [how the numbers were counted](docs/dogfooding.md).
+
+## Quick start
+
+Public CI currently covers Ubuntu. Other platforms are not yet part of the
+compatibility guarantee. You need Git, Python 3.11+, Node 18+, conda, and
+Claude Code and/or Codex CLI already installed and signed in.
+
+```bash
+git clone https://github.com/rickyJie/powergrandfather.git
+cd powergrandfather
+conda create -n csm python=3.11 -y
+conda activate csm
+pip install -e .
+alembic upgrade head
+npm --prefix frontend ci
+npm --prefix frontend run build
+./scripts/start.sh
+```
+
+Open `http://localhost:8000`. Stop it with `./scripts/stop.sh`.
+
+> **Naming note:** PowerGrandFather is the product name. The Python package,
+> conda environment and `CSM_*` settings retain the original internal name,
+> **CSM (Claude Session Manager)**, for compatibility. They are the same app.
+
+<details>
+<summary>Stuck? Let an agent install it</summary>
+
+Paste this into a Claude Code or Codex session from the repository root:
+
+> Read `LLMS.md` §0 in this repo's root and install PowerGrandFather by
+> following it in order. Verify each step with the check command in §0, and
+> tell me the URL when it is up.
+
+It handles the conda environment, alembic multiple heads, port conflicts and
+frontend build failures on its own.
+
+To confirm by hand:
+
+```bash
+curl -sf http://localhost:8000/api/health -H 'X-CSM-Client: 1' | head -c 80
+curl -sf http://localhost:8000/ | grep -q 'id="app"' && echo "SPA OK"
+```
+
+</details>
 
 <details>
 <summary><strong>Why "PowerGrandFather"?</strong></summary>
@@ -95,8 +155,8 @@ Kubernetes to hold it up.
 There is one user. You.
 
 So: **one uvicorn process, one SQLite file.** No broker, no external
-scheduler, no second datastore. Roughly 24 API routers, ~11 typed event types,
-and one in-memory pub/sub bus that everything subscribes to. `./scripts/start.sh`
+scheduler, no second datastore. A typed event stream and one in-memory pub/sub
+bus connect the modules. `./scripts/start.sh`
 is the whole deployment story, and `csm.db` is the whole backup story. The
 reasoning is written down in [ADR-0002](docs/decisions/0002-single-process-monolith.md)
 if you want to argue with it.
@@ -110,7 +170,10 @@ The first version of this tool was not written by hand. It was written by
 Claude Code, cron-driven and unattended, over a 27-hour window — about 9-10
 hours of actual work — producing the skeleton, the end-to-end fixes and the
 feature passes. Four P0/P1 bugs came up along the way; it found, reverted and
-redid all four itself. The unedited trail is in `git log`.
+redid all four itself. The public repository is a sanitized source snapshot,
+so its short commit history is not the development history; the publishable
+timeline and methodology are summarized in the
+[dogfooding notes](docs/dogfooding.md).
 
 Since then every feature has been built by using PowerGrandFather to manage
 the Claude sessions that build PowerGrandFather. That's not a marketing line,
@@ -124,7 +187,8 @@ this.
 ## How it compares
 
 There are good tools in this space and they are not trying to be this one.
-Facts below are from each project's own README; the judgement calls are mine.
+Facts below were checked against each project's own README on 2026-08-31; the
+judgement calls are mine.
 
 **[Orca](https://github.com/stablyai/orca)** — a native desktop ADE (Electron,
 MIT). Its idea is **git worktree isolation**: every agent task gets its own
@@ -181,42 +245,6 @@ project made in exchange for being narrower everywhere else.
 Multi-user or any auth model beyond a shared token · git worktree isolation ·
 a hosted/cloud version · a quota-percentage metric ([ADR-0001](docs/decisions/)
 explains why) · replacing your editor.
-
----
-
-## Install (5 minutes)
-
-```bash
-# Prerequisites: Python >= 3.11 · Node >= 18 · conda
-conda create -n csm python=3.11 -y && conda activate csm
-pip install -e ".[dev]"
-alembic upgrade head
-(cd frontend && npm install && npm run build)
-./scripts/start.sh
-```
-
-Open `http://localhost:8000`. Stop it with `./scripts/stop.sh`.
-
-<details>
-<summary>Stuck? Let an agent install it</summary>
-
-Paste this into a Claude Code or Codex session you already have open:
-
-> Read `LLMS.md` §0 in this repo's root and install CSM by following it in
-> order. Verify each step with the check command in §0, and tell me the URL
-> when it's up.
-
-It handles the conda environment, alembic multiple heads, port conflicts and
-frontend build failures on its own.
-
-To confirm by hand:
-
-```bash
-curl -sf http://localhost:8000/api/health -H 'X-CSM-Client: 1' | head -c 80
-curl -sf http://localhost:8000/ | grep -q 'id="app"' && echo "SPA OK"
-```
-
-</details>
 
 ---
 

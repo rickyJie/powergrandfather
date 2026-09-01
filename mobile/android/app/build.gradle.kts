@@ -20,7 +20,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 18
-        versionName = "0.5.0"
+        versionName = "0.9.3"
     }
 
     // Release signing. The key that signs the published APK is deliberately

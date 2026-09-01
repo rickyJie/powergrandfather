@@ -680,7 +680,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="PowerGrandFather - Claude Session Manager",
-    version="0.1.0",
+    version="0.9.3",
     lifespan=lifespan,
 )
 
