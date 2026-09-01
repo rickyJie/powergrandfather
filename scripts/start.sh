@@ -52,6 +52,12 @@ if [ "${CSM_ENABLE_TLS:-}" = "1" ] && [ -f "$CERT" ] && [ -f "$KEY" ]; then
   SCHEME="https"
 fi
 
+STARTUP_TIMEOUT_SEC="${CSM_STARTUP_TIMEOUT_SEC:-15}"
+if ! [[ "$STARTUP_TIMEOUT_SEC" =~ ^[1-9][0-9]*$ ]]; then
+  echo "[start] invalid CSM_STARTUP_TIMEOUT_SEC=$STARTUP_TIMEOUT_SEC (expected positive integer)" >&2
+  exit 1
+fi
+
 echo "[start] uvicorn on ${SCHEME}://$HOST:$PORT (logs: $LOGFILE)"
 if [ "$SCHEME" = "http" ]; then
   echo "[start] plain HTTP (mobile /m/ over SSH tunnel needs this). Desktop-only LAN box wanting right-click paste: CSM_ENABLE_TLS=1 ./scripts/start.sh (after ./scripts/gen-cert.sh)"
@@ -63,18 +69,43 @@ UVICORN_PID=$!
 echo "$UVICORN_PID" > "$PIDFILE"
 echo "[start] pid=$UVICORN_PID"
 
-# Liveness gate: uvicorn can silently die during boot (import error, port
-# clash, alembic mismatch) and `nohup` swallows the stderr into csm.log.
-# Wait a couple seconds, then check the process is still alive — if it
-# isn't, dump the tail of the log so the user sees the error in-terminal
-# instead of having to `tail -f csm.log` themselves.
-sleep 2
-if ! kill -0 "$UVICORN_PID" 2>/dev/null; then
-  echo "[start] uvicorn died within 2s — dumping last 30 lines of $LOGFILE:" >&2
+# Readiness gate: a PID can still be alive while uvicorn is finishing startup,
+# then die on a late bind/import failure. Do not report success until the real
+# API answers. Python is already a hard dependency, so the probe does not add
+# a curl requirement to the installer.
+case "$HOST" in
+  0.0.0.0) PROBE_HOST="127.0.0.1" ;;
+  ::|\[::\]) PROBE_HOST="[::1]" ;;
+  *) PROBE_HOST="$HOST" ;;
+esac
+HEALTH_URL="${SCHEME}://${PROBE_HOST}:${PORT}/api/health"
+STARTUP_DEADLINE=$((SECONDS + STARTUP_TIMEOUT_SEC))
+HEALTHY=0
+while kill -0 "$UVICORN_PID" 2>/dev/null && (( SECONDS < STARTUP_DEADLINE )); do
+  if CSM_STARTUP_HEALTH_URL="$HEALTH_URL" python -c '
+import os, ssl, urllib.request
+url = os.environ["CSM_STARTUP_HEALTH_URL"]
+request = urllib.request.Request(url, headers={"X-CSM-Client": "1"})
+context = ssl._create_unverified_context() if url.startswith("https://") else None
+with urllib.request.urlopen(request, timeout=1, context=context) as response:
+    if response.status != 200:
+        raise SystemExit(1)
+' >/dev/null 2>&1; then
+    HEALTHY=1
+    break
+  fi
+  sleep 0.25
+done
+
+if [ "$HEALTHY" != "1" ]; then
+  echo "[start] server did not become healthy within ${STARTUP_TIMEOUT_SEC}s — dumping last 20 lines of $LOGFILE:" >&2
   echo "---8<--- csm.log tail ---8<---" >&2
-  tail -n 30 "$LOGFILE" >&2 || true
+  tail -n 20 "$LOGFILE" >&2 || true
   echo "---8<--- end ---8<---" >&2
+  if kill -0 "$UVICORN_PID" 2>/dev/null; then
+    kill -TERM "$UVICORN_PID" 2>/dev/null || true
+  fi
   rm -f "$PIDFILE"
   exit 1
 fi
-echo "[start] alive after 2s ✓"
+echo "[start] healthy at $HEALTH_URL ✓"
