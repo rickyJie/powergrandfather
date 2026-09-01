@@ -1,0 +1,80 @@
+name: Installation help
+description: Report a problem cloning, installing, migrating, building, or starting PowerGrandFather.
+title: "[install] "
+labels:
+  - installation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying PowerGrandFather. Public CI currently covers Ubuntu;
+        reports from every platform are still useful. Please redact repository
+        paths, prompts, tokens, chat IDs, and other private data before posting.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Ubuntu
+        - Other Linux
+        - WSL
+        - macOS
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Paste the output of `python --version`, `node --version`, and `conda --version`.
+      placeholder: Python 3.11.x; Node v22.x; conda 25.x
+    validations:
+      required: true
+
+  - type: dropdown
+    id: step
+    attributes:
+      label: Failing step
+      options:
+        - git clone
+        - conda environment creation
+        - pip install
+        - alembic upgrade head
+        - npm ci
+        - npm run build
+        - scripts/start.sh
+        - health check or first page load
+        - Claude Code or Codex session launch
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands and error output
+      description: Include the exact command and only the last 20 relevant lines of output.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result
+      placeholder: I expected ...; instead ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed secrets, private paths, prompts, and personal data from this report.
+          required: true
+        - label: I followed the current Quick Start from the repository's default branch.
+          required: true

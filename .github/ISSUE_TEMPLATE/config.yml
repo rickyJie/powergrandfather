@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Installation and troubleshooting guide
+    url: https://github.com/rickyJie/powergrandfather#troubleshooting
+    about: Check the documented recovery steps before opening an installation issue.
+  - name: Known limits
+    url: https://github.com/rickyJie/powergrandfather/blob/main/docs/known_issues.md
+    about: Confirm whether the behavior is an intentional v0.9.3 limitation.
